@@ -1,0 +1,555 @@
+<!doctype html>
+<html>
+
+<meta charset="utf-8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+<title>Online Student Login</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+
+<style>
+
+  @media (max-width: 1024px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+		top: 0;
+		border-width: 0 0 1px;
+	}
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+		margin-top: 7.5px;
+	}
+	.navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+  		display:block !important;
+	}
+}
+  
+
+	.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+	background-color: rgb(102, 0, 0) !important;
+	border-color: #337ab7 !important;
+	}
+	.dropdown-menu { background-color: rgb(102, 0, 0) !important;
+	}
+	
+	.dropdown-menu > li > a {
+	color:white !important;
+	}
+	.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+	color: #262626;
+	text-decoration: none;
+	background-color: #992b00 !important;
+}
+ @media(max-width: 1440px) and (min-width:1201px){.footmid { padding: 0 0 0 4px !important;}}
+ @media(max-width:768px){.mob_bckgrnd{height:770px !important;}}
+.well {
+	min-height: 20px;
+	padding: 19px;
+	margin-bottom: 20px;
+	background-color: #e5e7f3eb;
+	border: 1px solid #e3e3e3;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+.inputGroupContainer .font_text {
+	background: #e8ebfc;
+	color: gray;
+	text-align: left;
+	width: 130px;
+	font-weight: normal;
+	text-align: left;
+}
+
+.bg-img {
+	/* The image used */
+	background-image: url("img_nature.jpg");
+	min-height: 380px;
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+}
+
+.input-group-addon {
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	background-color: #b33d3df0;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.btn-regis {
+	background-color: #b33d3df0;
+}
+
+.p-logo {
+	padding: 10px 43px 10px 0px;
+}
+.footer {
+
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #7c181e;
+color: white;
+text-align: center;
+}
+.footerSpc{
+ 			position: -webkit-sticky !important;
+ 			position: sticky !important;
+ 		}
+.toggle_bar{padding: 5px;
+   			 color: #fff;
+        	border: 1px solid #fff;}
+        	 .aside {
+    top: 169px !important;
+    position: absolute!important;
+}
+
+/* .navbar-toggle {padding:0 10px;} */
+   .aside-backdrop.in {
+    display: block;
+    opacity: 0.3;
+} 
+body {
+    background: #5f1f01;
+    font-family: 'Roboto';
+}    	
+
+.contact-container{
+border:4px solid rgb(168, 20, 20) !important;
+padding:20px;
+border-radius:2px;
+}
+.mrsptu_head{
+border:2px solid rgb(168, 20, 20) !important;
+}
+.map_head{
+
+}
+.theadnew{
+background-color:rgb(168, 20, 20) !important;
+color:White;
+}
+
+.table-bordered > tbody > tr > th{
+ border: 1px solid White !important;
+ }
+ .table-bordered > tbody > tr > td{
+ border: 1px solid White !important;
+ }
+ .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: unset !important;
+}
+.table-striped > tbody > tr:nth-of-type(even):hover {
+    background-color: unset !important;
+}
+ul>li{
+list-style-type: none !important;
+}
+
+.map-responsive{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+.map-responsive iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
+@media (max-width: 768px){
+.mob_bckgrnd {
+    height: 1400px !important;
+}}
+/* .responsive-map-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+}
+
+.responsive-map-container iframe,   
+.responsive-map-container object,  
+.responsive-map-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+} */
+</style>
+
+
+
+<body>
+<header>
+		<div class="middle-w3ls-nav py-2 " style="background-color: #a81414; background: linear-gradient(to bottom, #641b24 0%, #aa1515 100%);">
+			<div class="col-md-12 header-color header1 sticky" style="z-index: 1111;">
+			
+				<div class="row">
+					
+
+						<div class="col-md-2">
+
+							<!-- <a class="logo font-italic font-weight-bold col-lg-3 text-lg-left text-center p-logo"
+								href="http://mrsptu.ac.in/" target="_blank"> -->
+								<a>
+								<div class="col-xs-12 col-sm-2" >
+									<div class="col-xs-12 mob-center">
+										<img src="../resources/images/mrsptulogo.png">
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-10 p-25" style="">
+							<div
+								class="col-lg-9 right-info-agiles mt-lg-0 mt-sm-3 mt-1 sub_head">
+								<div class="Head_ass">
+									<div class="row">
+										<span class="hidden-xs head_cont mp-25"> <img src="../resources/images/aaa.png">
+										</span><br>
+
+										<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10  ">
+											<div class="col-xs-12 mob-center">
+												<span class="head_cont text-center ff font_tab">Maharaja
+													Ranjit Singh Punjab Technical University, BATHINDA </span>
+											</div>
+										</div>
+										<br>
+										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-12  ">
+											<div class="col-xs-12">
+												<span class="hidden-xs head_cont head3_cont font-ass ff font_sub_title"
+													style="font-size: 13px;">(A State University
+													Established By Govt. of Punjab vide Punjab Act No. 5 of
+													2015 and Approved Under Section 2(f) &amp; 12 (B) of UGC)</span>
+											</div>
+										</div>
+										<br>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+ 
+  
+			 
+<!-- banner -->
+
+<!-- banner -->
+	
+
+		<!-- navigation -->
+		 <div class="navigation-w3ls">
+			<nav class="nav navbar-expand-lg navbar-light bg-light sticky-nav">
+			<div class="nav-bar header"> 
+				<button class="navbar-toggle mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+				 aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggle-icon"></span>
+					<i class="fa fa-bars toggle_bar"></i>
+				</button>
+			 </div> 
+				<!-- <br>
+				<br> -->
+				<div class="collapse navbar-collapse text-center" id="navbarSupportedContent"style="margin: 1px 69px 0px 0px;">
+				  
+					<ul class="nav navbar-nav justify-content-center text-center">
+					<li class="nav-item">
+							<a class="nav-link text-white" href="loginUser.jsp">Home</a>
+						</li>
+					<!-- <li class="nav-item">
+							<a class="nav-link text-white" href="">Eligibility Criteria</a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link text-white" href="http://43.254.41.220/mrsptu-iums/">University Admin Login
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#loginUser.jsp">College/Institute Login</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#loginUser.jsp">Admission/Helpline Cell 2019-20</a>
+						</li>
+						 -->
+						 <li class="nav-item active">
+							<a class="nav-link text-white" href="http://43.254.41.220/mrsptu-iums/">University Admin Login
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#loginUser.jsp">College/Institute Login</a>
+						</li>
+						<li class="dropdown">
+							<a class="dropdown-toggle nav-link text-white" data-toggle="dropdown" href="#" style="font-size:14.5px!important;font-family: inherit!important;letter-spacing: 1px;">Important Documents
+							<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+							<li>
+							<a href="#">Information Brochure 2018-19 </a>
+							<li>
+							<a href="resources/images/Eligibility of the courses for session 2019-20 (FINAL).pdf"download>Eligibility of the Courses for Academic session 2019-20
+							<img src="resources/images/Eligibility of the courses for session 2019-20 (FINAL).pdf" alt="" width="" height="">
+							</a>
+							</li>
+							<li>
+							<a href="resources/images/MRSPTU programmes updated on 10.06.2019 (FINAL).pdf"download>Courses offered by MRSPTU Main Campus, Constituent Colleges & Affiliated Colleges
+							<img src="resources/images/MRSPTU programmes updated on 10.06.2019 (FINAL).pdf" alt="" width="" height="">
+							</a>
+							</li>
+							<li>
+							<a href="resources/images/fee structure-I-III Main Campus & Constituent 2019-20.pdf"download>Fee Structure for Main Campus & Constituent Colleges
+							<img src="resources/images/fee structure-I-III Main Campus & Constituent 2019-20.pdf" alt="" width="" height="">
+							</a>
+							</li>
+							<li>
+							<a href="resources/images/Fee structure Affiliated colleges.pdf"download>Fee Structure for Affiliated Colleges
+							<img src="resources/images/Fee structure Affiliated colleges.pdf" alt="" width="" height="">
+							</a>
+							</li>
+							<li>
+							<a href="resources/images/Notification 55 Chief Minister Scholarship Scheme for Academic session 2019-20.pdf"download>Chief Minister Scholarship Scheme
+							<img src="resources/images/Notification 55 Chief Minister Scholarship Scheme for Academic session 2019-20.pdf" alt="" width="" height="">
+							</a>
+							</li>
+							</ul>
+					   </li>
+						
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#loginUser.jsp">Admission/Helpline Cell 2019-20</a>
+						</li>
+					</ul>
+					 
+				</div> 
+			</nav>
+		</div> 
+		<!-- //navigation --> 
+	
+	<div class="mob_bckgrnd"style="background: url(../resources/images/2.jpg);background-position: center;background-attachment: fixed;background-size: cover;    height: 1600px;">
+ <a href="#" onclick="$('.aside').asidebar('open')" > 
+       <span class="fa fa-bars tog_class"></span> 
+        </a>
+        <br> <br> <br>
+		<div class="row" style="">
+		<div class="col-md-12 col-lg-12">
+		
+			<div class="col-md-2 col-lg-2 col-sm-2 col-xs-1 "></div>
+			<div class="">
+			<div class="col-md-8 col-lg-8 col-sm-8 col-xs-10"style="font-family: 'Open Sans', sans-serif !important;
+    font-size: 14px !important;">
+				
+					<form class="well form-horizontal" name="login" role="form" method="post" autocomplete="off">
+					<fieldset>
+					   <div class="contact-container">
+					   
+							<!-- Form Name -->
+							
+							<h2 class="text-center aa" style="padding-bottom: 20px;">Contact Us</h2>
+						<div class="mrsptu_head">	
+					   <div class="form-group" style="margin-left: 6px !important;margin-right: 6px !important;">
+					   <div class="col-md-12">
+					   <div class="row">
+					   <div class="pageheader" style="margin-top: 5px;margin-bottom:5px;">
+					   <h4 class="text-left" style=margin-bottom:5px;"><b>Maharaja Ranjit Singh Punjab Technical University</b></h4>
+					   <h5 >Dabwali Road,</h5>
+					   <h5>Bathinda-151001</h5>
+					   
+					   </div>
+					   
+					   
+					   </div>
+					   
+					   </div>
+					   
+					   </div>
+					   </div>
+					   <div class="mrsptu_head">	
+					   <div class="table-responsive">
+					   <table class="table table-bordered table-hover table-striped " id="">
+					   <thead class="theadnew">
+					   <tr><th colspan="4" class="text-center">For Admission related Query Contact:</th>
+					   <th colspan="1" class="text-center"><i class="fa fa-envelope-open" style="font-size:24px"></i></th>
+					   <th colspan="1" class="text-center">helpdesk@mrsptu.ac.in</th>
+					   
+					   </tr>
+					   </thead>
+					   <tbody>
+					   <tr>
+					   <td class="text-center">1</td>
+					   <td class="text-left" colspan="2">For Engineering & Tech. Courses</td>
+					   <td class="text-left" colspan="3">87250-72404,87250-72403,87250-72402</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">2</td>
+					   <td class="text-left" colspan="2">For GZS School of Architecture & Planning</td>
+					   <td class="text-left" colspan="3">87250-72417,87250-72418,94177-55569</td>
+					   </tr>
+					    <tr>
+					   <td class="text-center">3</td>
+					   <td class="text-left" colspan="2">For Pharmaceutical Sci. & Tech.</td>
+					   <td class="text-left" colspan="3">89684-23848,87250-72348,87250-72349</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">4</td>
+					   <td class="text-left" colspan="2">For Food Sci. & Tech.</td>
+					   <td class="text-left" colspan="3">98962-68539,70157-09403</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">5</td>
+					   <td class="text-left" colspan="2">For University Business School</td>
+					   <td class="text-left" colspan="3">87250-72428,87250-72429</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">6</td>
+					   <td class="text-left" colspan="2">For Computational Sciences</td>
+					   <td class="text-left" colspan="3">87250-72325,87250-72425,87250-72431</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">7</td>
+					   <td class="text-left" colspan="2">For Physics</td>
+					   <td class="text-left" colspan="3">87250-72490</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">8</td>
+					   <td class="text-left" colspan="2">For Chemistry</td>
+					   <td class="text-left" colspan="3">99971-82264,94637-90223,87250-72412</td>
+					   </tr>
+					   <tr>
+					   <td class="text-center">9</td>
+					   <td class="text-left" colspan="2">For Mathematics</td>
+					   <td class="text-left" colspan="3">88722-11700,88722-11150,98149-22258</td>
+					   </tr>
+					   <tr>
+					   <td colspan="6">For Query Related to Counselling of IKGPTU, Jalandhar,Kindly Contact on:</td>
+					   </tr>
+					   <tr>
+					   <td><i class="fa fa-phone" style="font-size:24px"></i></td>
+					    <td>+91-94780-98012</br>
+					   +91-75894-01150</td> 
+					   <td class="text-center"><i class="fa fa-phone" style="font-size:24px"></i></td>
+					    <td>1800-419-0730(Toll Free Number)</td> 
+					  <td><i class="fa fa-envelope-open" style="font-size:24px"></i></td> 
+					   <td>studentcenter@ptu.ac.in</br>
+					   admissioncell@ptu.ac.in</td>
+					   </tr>
+					   <tr>
+					   <td colspan="6">For any Technical Query or Problem Related to Payment:Kindly Contact on:</td>
+					   </tr>
+					   <tr>
+					   <td><i class="fa fa-phone" style="font-size:24px"></i></td>
+					    <td colspan="3">+91-87250-72322</br>
+					   +91-89682-32754</td> 
+					   <td class="text-center" colspan="2"></td>
+					    
+					  
+					   
+					   </tr>
+					   </tbody>
+					   </table>
+					   </div>
+					   </div>
+					   
+					    <div class=" "> <!--col-xs-12 col-sm-8 col-md-8 col-lg-8 table-responsive  -->
+
+     
+
+
+<br/>
+     <div class="map_head"><h5><b>Location Map</b></h5></div> 
+ <h5>The University is located on the out skirts of Bathinda and Badal road.It is</h5>
+ 
+<ul>
+<li>7 Km from Bathinda Railway Station.</li>
+<li>5 Km from Bathinda Bus stand.</li>
+<li>210 Km from Chandigarh.</li>
+<li>300 Km from Delhi by rail and 345 Km by Bus.</li>
+<li>155 Km from Patiala</li>
+</ul>
+ </div>
+ 
+<div class=" " style="margin-top:5px; margin-bottom:5px;"><!-- col-xs-12 col-sm-8 col-md-8 col-lg-8 -->
+ <div class="map_head"><h5><b> Map</b></h5></div>
+</div>
+
+<div class="map-responsive"> <!-- col-md-12 col-xs-12 col-lg-12 col-sm-12 table-responsive responsive-map-container-->
+<!--  <iframe frameborder="0" scrolling ="no" marginheight="0" marginwidth="0" width="650px" height="350px" src="https://maps.google.com/maps?hl=en&q=maharaja ranjit singh state technical university, bathinda&ie=UTF8&t=k&ziwloc=B&output=embed"></iframe> allowfullscreen -->
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3449.215933246385!2d74.92106511508041!3d30.173825119403947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39172d0bd023ecd3%3A0x98b0adf19ab47296!2sMaharaja+Ranjit+Singh+Punjab+Technical+University!5e0!3m2!1sen!2sin!4v1560158307283!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0" ></iframe>
+	</div>
+	 
+					   
+					   
+					   </div>
+					   </fieldset>
+						
+							</form>
+
+							</div>
+							</div>
+							
+							
+							 
+					
+				</div>
+			</div>
+			
+				<div class="col-md-2 col-xs-1 col-sm-2 col-lg-2"></div>
+		</div>
+		
+		
+		 
+	
+	 <div class="aside" id="myasid" style="background: url(../resources/images/mrsptu_1.png);">
+
+         
+	
+	<div class="aside-backdrop"></div>
+    </div>
+    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script> -->
+    <script type="text/javascript" src="../resources/js/pre-admission/asidebar.jquery.js"></script>
+	
+</body>
+</html>
