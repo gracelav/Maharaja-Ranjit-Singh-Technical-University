@@ -1,0 +1,551 @@
+/**
+ * @author karanveer singh
+ */
+/*function getProgrammeData(type,url){
+	
+	try{
+		var courseArray;
+ 	  
+		if(type=='dropDown'){
+		var course=$("#coursesId").val();
+		if(course!=''){
+			courseArray="["+course.split(",")+"]";
+		}
+		}
+		if(type=='table'){
+			 $("#skillTable").find("tr:gt(0)").remove();
+		}
+		clearSuccessMessageAfterTenSecond("errMsg");
+		var jsonObject={"courseType":$("#courseType").val()};
+		$.ajax({ 
+			type: "POST",
+			url:url+'getDegree.html',
+			contentType: 'application/json',
+			dataType: 'json',
+			data:JSON.stringify(jsonObject),
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+             
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 
+                	 var moduleHtml ="";
+               	 if(type=='list'){
+               		 $("#course").empty();
+                     moduleHtml = '<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;">';
+               	 }
+               	var index=0;
+                     $.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                        index=index+1;
+                     	if(type=='list')
+                        moduleHtml +='<li><input type="checkbox"  id="checkBoxClass" class="checkBoxClass"  name="checkBoxClass"  value="'+widgetKey+'"> '+widgetValue+'</li>';
+                     	else if(type=='table')
+                     	$('#skillTable tr').last().after('<tr ><td class="text-center">'+index+'</td><td class="text-center">'+widgetValue+' </td></tr>');	
+                     	else 
+                     	{
+                     		 if(course!='' && courseArray.includes(widgetKey)){
+                     			moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                     		 }else{
+                     	     moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     		 }
+                     	}
+                     });
+                     if(type=='list')
+                     $("#course").html(moduleHtml+'</ul>');
+                     else if(type=='table')
+                     $('#skillModal').modal('show'); 
+                     else
+                    	 {
+                    	 $("#course").html(moduleHtml);
+                    	 $("#course").attr('multiple', 'multiple'); 
+                    	 $('.multiselect-ui').multiselect({
+                 	        includeSelectAllOption: false ,
+                 			buttonWidth : '100%',
+                 			nonSelectedText: 'Select Course(s)',
+                 			<!-- minimumCountSelected:'5' -->
+                 			 numberDisplayed: 1,
+                 			 
+                 	     }); 
+                    	 }
+                    
+                   
+                }else{
+                	
+               	 if(type=='list')
+                 $("#course").html('<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;"><li>List of College(s)</li></ul>');
+               	 else if(type=='table'){
+               	 $('#skillTable tr').last().after('<tr ><td colspan="2" class="text-center">Record not found</td></tr>');	 
+               	 $('#skillModal').modal('show'); 
+               	 }
+               	 else 
+               	 $("#course").html("<option value=''>Select Course(s)</option>");
+                }
+			}  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}*/
+
+function getProgrammeData(type,url){
+	
+	try{
+		var courseArray;
+ 	  
+		
+		
+		if(type=='dropDown'){
+		var course=$("#sel_courses").val();
+		/*if(course!=''){
+			courseArray="["+course.split(",")+"]";
+		}*/
+		}
+		
+		clearSuccessMessageAfterTenSecond("errMsg");
+		var jsonObject={"courseType":$("#course_typ").val()};
+		$.ajax({ 
+			type: "POST",
+			url:url+'getDegree.html',
+			contentType: 'application/json',
+			dataType: 'json',
+			data:JSON.stringify(jsonObject),
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+             
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 
+                 var moduleHtml ="";
+               	 if(type=='list'){
+               		 $("#courseId").empty();
+                     moduleHtml = '<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;">';
+               	 }
+               	 else{
+               	  moduleHtml = "<option value=''>Select Course</option>";
+               	 }
+               	var index=0;
+                     $.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                        index=index+1;
+                     	if(type=='list')
+                        moduleHtml +='<li><input type="checkbox"  id="checkBoxClass" class="checkBoxClass"  name="checkBoxClass"  value="'+widgetKey+'"> '+widgetValue+'</li>';
+                     	else 
+                     	{
+                     		 if(course!='' && course==widgetKey){
+                     			moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                     		 }else{
+                     	     moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     		 }
+                     	}
+                     });
+                     if(type=='list')
+                     $("#courseId").html(moduleHtml+'</ul>');
+                     else
+                    	 {
+                    	 $("#courseId").html(moduleHtml);
+                    	 /*$("#course").attr('multiple', 'multiple'); 
+                    	 $('.multiselect-ui1').multiselect({
+                 	        includeSelectAllOption: false ,
+                 			buttonWidth : '100%',
+                 			nonSelectedText: 'Select Course(s)',
+                 			<!-- minimumCountSelected:'5' -->
+                 			 numberDisplayed: 1,
+                 			 
+                 	     }); */
+                    	 }
+                    
+                   
+                }else{
+                	
+               	 if(type=='list')
+                 $("#courseId").html('<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;"><li>List of College(s)</li></ul>');
+               	 else 
+               	 $("#courseId").html("<option value=''>Select Course</option>");
+                }
+			}  
+		});
+		  if(course!='')
+		  getCourseType('../common/',course);
+		
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+function getProgrammeType(type,url){
+	try{
+		var courseArray;
+ 	  
+		if(type=='dropDown'){
+		var course=$("#sel_course_type").val();
+		/*if(course!=''){
+			courseArray="["+course.split(",")+"]";
+		}*/
+		}
+		
+		clearSuccessMessageAfterTenSecond("errMsg");
+		$.ajax({ 
+			type: "POST",
+			url:url+'getProgrammeType.html',
+			contentType: 'application/json',
+			dataType: 'json',
+			async: false,
+			success: function (response)  // when data returns through // controller
+			{
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         	 
+                 var moduleHtml ="";
+               	 if(type=='list'){
+               		 $("#course_typ").empty();
+                     moduleHtml = '<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;">';
+               	 }
+               	 else{
+               		moduleHtml += "<option value=''>Select Course Type</option>";
+               	 }
+              
+                     $.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                     	if(type=='list')
+                        moduleHtml +='<li><input type="checkbox"  id="checkBoxClass" class="checkBoxClass"  name="checkBoxClass"  value="'+widgetKey+'"> '+widgetValue+'</li>';
+                     	else 
+                     	{
+                     		 if(course!='' && course==widgetKey){
+                     			moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                     		 }else{
+                     	     moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     		 }
+                     	}
+                     });
+                     if(type=='list')
+                     $("#course_typ").html(moduleHtml+'</ul>');
+                     else
+                    	 {
+                    	 $("#course_typ").html(moduleHtml);
+                    	 //$("#courseTyp").attr('multiple', 'multiple'); 
+                    	 /*$('.multiselect-ui').multiselect({
+                 	        includeSelectAllOption: false ,
+                 			buttonWidth : '100%',
+                 			nonSelectedText: 'Select Course Type',
+                 			<!-- minimumCountSelected:'5' -->
+                 			 numberDisplayed: 1,
+                 			 
+                 	     }); */
+                    	 }
+                    
+                }else{
+               	 if(type=='list')
+                 $("#course_typ").html('<ul class="form-control" style="height: 85px; padding-top:0px;overflow: auto; border: 1px solid #B2BABB; border-radius: 9px !important; list-style-type: none;"><li>List of College(s)</li></ul>');
+               	 else 
+               	 $("#course_typ").html("<option value=''>Select Course Type</option>");
+                }
+			}  
+		});
+		
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+
+function getCourseType(url,course){
+	
+	try{
+		
+		var pgmType=$("#pgm_type").val();
+		var jsonObject={"pgm_id":course};
+		
+		$.ajax({ 
+			type: "POST",
+			url:url+'getCourseType.html',
+			dataType: 'json',
+			async: false,
+			data:JSON.stringify(jsonObject),
+			contentType: "application/json",
+			success: function (response)  // when data returns through
+											// controller
+			{
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 var moduleHtml = "<option value=''>Select Programme Type</option>"; 
+                	$.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                        if(pgmType!='' && pgmType==widgetKey)
+                     	 moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";	 
+                     	 else
+                         moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     });
+                     $("#pgmType").html(moduleHtml);
+                }else{
+               	    $("#pgmType").html("<option value=''>Select Programme Type</option>");
+                }
+			}  
+		});
+		
+	}catch(err){
+		
+	}
+}
+
+function getCategory(index,webServiceUrl){
+	
+	try{
+		
+		clearSuccessMessageAfterTenSecond("errMsg");
+		var jsonObject={"categoryType":"cat"};
+		$.ajax({ 
+			type: "POST",
+			url:webServiceUrl+'getCategory.html',
+			data:  JSON.stringify(jsonObject),
+			dataType: 'json',
+			async: false,
+			contentType: "application/json",
+			success: function (response)  // when data returns through
+											// controller
+			{
+             
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 var moduleHtml = "<option value=''>Select Category</option>"; 
+                	$.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                     	 moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     });
+                     $("#"+index).html(moduleHtml);
+                }else{
+               	 $("#"+index).html("<option value=''>Select Category</option>");
+                }
+			}  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+function getCurrentFinancialYear(webServiceUrl){
+	
+	try{
+		$.ajax({ 
+			type: "GET",
+			url:webServiceUrl+'getSession.html',
+			dataType: 'json',
+			async: false,
+			success: function (response) // controller
+			{
+                
+				$("#registerationYear").val(response.id);
+            }
+			  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+function getCollegeByUniversity(uni,id,selected,courseId)
+{
+try{
+	
+	var pgmType=$("#course_type").val();
+	jsonObject={"uni":uni,"courseId":courseId,"pgmType":pgmType};
+	$.ajax({ 
+		type: "POST",
+		url:'../common/getCollegeByUniversity.html',
+	    contentType: 'application/json',
+		dataType: 'json',
+		async: false,
+		data:JSON.stringify(jsonObject),
+		success: function (response)  // when data returns through controller
+		{
+          
+			 if (typeof response.data != 'undefined' && response.data.length > 0)
+             {         
+             	 var moduleHtml = "<option value=''>Select College</option>"; 
+             	$.each(response.data, function (key, val) {
+                     var widgetKey = val.id;
+                     var widgetValue = val.value;
+                     if(selected==widgetKey)
+                  	 moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";	
+                     else
+                     moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                  });
+                  $("#"+id).html(moduleHtml);
+             }else{
+            	 $("#"+id).html("<option value=''>Select college</option>");
+             }
+			
+        }
+	});
+	
+}catch(err){
+	alert(err);
+}
+}
+
+
+function getDegreeByCollegeAndType(webServiceUrl,courseType,id,index,selected){
+	
+	
+	try{
+		
+		 var collegeId=$("#clg"+index).val();
+		/* var programmeType=$('input[name=ct]:checked').val();*/
+		var courseId= $("#courseId").val()
+		//$("#course_type").attr('disabled',true);
+		var jsonObject={"collegeId":collegeId,"courseType":courseType,"pgm_id":courseId};
+		$.ajax({ 
+			type: "POST",
+			 data:  JSON.stringify(jsonObject),
+			url:webServiceUrl+'getDegreeByCollege.html',
+			dataType: 'json',
+			contentType: "application/json",
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+				 if (typeof response.data != 'undefined' && response.data.length > 0)
+	             {         
+	             	 var moduleHtml = "<option value=''>Select Programme</option>"; 
+	             	$.each(response.data, function (key, val) {
+	                     var widgetKey = val.id;
+	                     var widgetValue = val.value;
+	                     if(selected==val.id)
+	                  	 moduleHtml += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+	                     else
+	                     moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+	                  });
+	                  $("#"+id).html(moduleHtml);
+	             }else{
+	            	 $("#"+id).html("<option value=''>Select Programme</option>");
+	             }
+            }
+			  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+function getCityByState(webServiceUrl,stateId,id){
+	
+	try{
+		var jsonObject={"stateId":stateId};
+		$.ajax({ 
+			type: "POST",
+			data:  JSON.stringify(jsonObject),
+			url:webServiceUrl+'getCityByState.html',
+			dataType: 'json',
+			contentType: "application/json",
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+				 if (typeof response.data != 'undefined' && response.data.length > 0)
+	             {         
+	             	 var moduleHtml = "<option value=''>Select City</option>"; 
+	             	$.each(response.data, function (key, val) {
+	                     var widgetKey = val.id;
+	                     var widgetValue = val.value;
+	                  	 moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+	                  });
+	                  $("#"+id).html(moduleHtml);
+	             }else{
+	            	 $("#"+id).html("<option value=''>Select City</option>");
+	             }
+            }
+			  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+
+function getCategory(object,index,webServiceUrl){
+	
+	try{
+	   
+		clearSuccessMessageAfterTenSecond("errMsg");
+		var jsonObject={"catId":object,"categoryType":"non_caste_cat"};
+		$.ajax({ 
+			type: "POST",
+			url:webServiceUrl+'getCategory.html',
+			data:  JSON.stringify(jsonObject),
+			dataType: 'json',
+			contentType: "application/json",
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 var moduleHtml = "<option value=''>Select Reservation Category</option>"; 
+                	$.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                     	moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     });
+                     $("#"+index).html(moduleHtml);
+                }else{
+               	 $("#"+index).html("<option value=''>Select Reservation Category</option>");
+                }
+			}  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}
+
+
+function getSpecialCat(object,index,webServiceUrl){
+	
+	try{
+		
+		clearSuccessMessageAfterTenSecond("errMsg");
+		var jsonObject={"catId":object.value,"categoryType":"specialCat"};
+		$.ajax({ 
+			type: "POST",
+			url:webServiceUrl+'getCategory.html',
+			data:  JSON.stringify(jsonObject),
+			dataType: 'json',
+			contentType: "application/json",
+			async: false,
+			success: function (response)  // when data returns through
+											// controller
+			{
+                if (typeof response.data != 'undefined' && response.data.length > 0)
+                {         
+                	 var moduleHtml = "<option value=''>Select Sub Category</option>"; 
+                	$.each(response.data, function (key, val) {
+                        var widgetKey = val.id;
+                        var widgetValue = val.value;
+                     	 moduleHtml += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                     });
+                     $("#"+index).html(moduleHtml);
+                }else{
+               	 $("#"+index).html("<option value=''>Select Sub Category</option>");
+                }
+			}  
+		});
+		
+	}catch(err){
+		alert(err);
+	}
+}

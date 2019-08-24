@@ -1,0 +1,3477 @@
+ var saveIndex= [];
+ /*var odSaveIndex= [];
+*/ var deleteIndex=[];
+$(document).ready(function(){ /* ---------- Start Document ready -------------------- */
+
+	
+	
+	if($("#formStatus").val()=='Y' && $("#applyNextRound").val()=='N'){
+	
+		$("#saveChoiceDetail *").prop('disabled',true);
+		 $("#academicDetail *").prop('disabled',true);
+		 $("#personalInfo *").prop('disabled',true);
+		 $("#otherDetailTab *").prop('disabled',true);
+		 $("#docDetail *").prop('disabled',true);
+	}
+	else if($("#formStatus").val()=='Y' && $("#applyNextRound").val()=='Y'){
+		
+		 $("#saveChoiceDetail *").prop('disabled',true);
+		 $("#academicDetail *").prop('disabled',true);
+		 $("#personalInfo *").prop('disabled',true);
+		 $("#otherDetailTab *").prop('disabled',true);
+		 $("#docDetail *").prop('disabled',true);
+	}
+	else if($("#formStatus").val()=='N' && $("#applyNextRound").val()=='Y'){
+		 $("#academicDetail *").prop('disabled',true);
+		 $("#personalInfo *").prop('disabled',true);
+		 $("#otherDetailTab *").prop('disabled',true);
+		 $("#docDetail *").prop('disabled',true);
+	}
+
+	
+	
+	
+	/*document.addEventListener('contextmenu', event=> event.preventDefault());
+	document.onkeydown = function(e) {
+	if(event.keyCode == 123) {
+	return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+	return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+	return false;
+	}
+	if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+	return false;
+	}
+	}*/
+	
+	$('input').keypress(function(event) 
+			{  
+		      if (event.keyCode == 13) 
+			  { 
+		    	    if($("#pageName").val()=='index')
+				    $('[name="btnRegister"]').click(); 
+		    	    else if($("#pageName").val()=='loginUser')
+		    	    $('[name="btnLogin"]').click(); 
+				} 
+		    }); 
+	
+
+	/*code for next and previous button*/
+	 var pageType= $("#pageType").val(); 
+	 if(pageType=='inner' || pageType=='outer'){
+		  localStorage.setItem('activeTab', ''); 
+	 }
+	 saveIndex.push(1);
+	/* odSaveIndex.push(1);*/
+	 $('#skill').click(function(){
+		 var webUrl='../common/';
+		 getProgrammeData("table",webUrl);
+		  });
+	 
+	 $("#checkAll1").click(function() {
+		var count=parseInt($('#countOfEntrance').val());
+	
+		if($(this).prop("checked") == true)
+		{
+			for(var index=1; index<=count; index++)
+				{
+				
+				if(index==5){
+				     $('#ent'+index).prop('disabled', false);  
+					}
+				$('#rank'+index).prop('disabled', false);
+	        	$('#score'+index).prop('disabled', false);
+	        	$('#rollNo'+index).prop('disabled', false);
+	        	$('#year'+index).prop('disabled', false);
+				}
+		}else{
+			for(var index=1; index<=count; index++)
+			{
+				if(index==5){
+			     $('#ent'+index).val('');	
+			     $('#ent'+index).prop('disabled', true);
+			     
+				}
+				$('#rank'+index).val('');
+	        	$('#score'+index).val('');
+	        	$('#rollNo'+index).val('');
+	        	$('#year'+index).val('');
+			$('#rank'+index).prop('disabled', true);
+        	$('#score'+index).prop('disabled', true);
+        	$('#rollNo'+index).prop('disabled', true);
+        	$('#year'+index).prop('disabled', true);
+			}
+		}
+		  $(".checkBoxClass2").not(this).prop('checked', this.checked);
+	});
+	
+	$('.checkBoxClass2').click(function(){
+        if($(this).prop("checked") == true){
+        	if($(this).val()==5){
+			     $('#ent'+$(this).val()).prop('disabled', false);  
+				}
+        	$('#rank'+$(this).val()).prop('disabled', false);
+        	$('#score'+$(this).val()).prop('disabled', false);
+        	$('#rollNo'+$(this).val()).prop('disabled', false);
+        	$('#year'+$(this).val()).prop('disabled', false);
+        }
+        else if($(this).prop("checked") == false){
+        	if($(this).val()==5){
+			     $('#ent'+$(this).val()).prop('disabled', true); 
+			     $('#ent'+$(this).val()).val('');
+				}
+        	$('#rank'+$(this).val()).val('');
+        	$('#score'+$(this).val()).val('');
+        	$('#rollNo'+$(this).val()).val('');
+        	$('#year'+$(this).val()).val('');
+        	$('#rank'+$(this).val()).prop('disabled', true);
+        	$('#score'+$(this).val()).prop('disabled', true);
+        	$('#rollNo'+$(this).val()).prop('disabled', true);
+        	$('#year'+$(this).val()).prop('disabled', true);
+        }
+    });
+	
+	$('#elibty').change(function(){ //alert("12354"); //use to hide 12th detail and show 10+3 yr diploma table with 6 semester
+		 if($(this).val()=='10+')
+			    {
+			      $(".dpm").show();
+			      $(".dpm1").show();
+			      $(".2").hide();
+			      $(".22").hide();
+			      $(".23").hide();
+			      $(".6th").show();
+			    }
+		 else if($(this).val()=='12+') //use to show 12th detail and show 5 semester in diploma table
+		    {
+		      $(".dpm").show();
+		      $(".dpm1").show();
+		      $(".6th").hide();
+		      $(".2").show();
+		      $(".22").show();
+		      $(".23").show();
+		    }
+		 else if($(this).val()=='Under')// use to show graduation detail table
+		    {
+		      $(".ug").show();
+		      $(".ug1").show();
+		    }
+		 if($(this).val()!=$("#elgCheck").val())
+		 $("#adflag").val("changeinEligibility"); 
+		 else
+		 $("#adflag").val("true"); 	 
+	    });
+	
+	/*$('#pg').click(function(){//alert("12354");
+		 if($("input[name='ct']:checked"). val()=='PG')
+			    {
+			      $(".gd").show();
+			      $("#flag").val("true");
+			    }
+	    });*/
+/*
+		$('#ug').click(function(){//alert("12354");
+		 if($("input[name='ct']:checked"). val()=='UG')
+			   {     	  
+			    $(".gd").hide(); 
+			    $("#flag").val("false");
+			   }
+	        
+	    });*/
+
+	/*	$('#sk').click(function(){//alert("12354");
+		 if($("input[name='ct']:checked"). val()=='SK')
+			 {     	  
+			 $(".gd").hide();  
+			 $("#flag").val("false");
+			 }
+	        
+	    });*/
+		
+		
+	 $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+	
+	        var $target = $(e.target);
+	        if ($target.parent().hasClass('disabled')) {
+	            return false;
+	         
+	        }
+	      
+	    });
+  	
+
+
+	$('.btnNext').click(function(e){
+		
+		var tableName="";
+		var $activeTab = $('.tab-content .tab-pane.active')
+		var activeId = $activeTab.attr('id');
+		if(activeId=='tab1default')
+		tableName="pre_add_studentprofile";
+		else if(activeId=='tab2default')
+		tableName="pc_student_academic_mast";	
+		else if(activeId=='tab3default')
+		tableName="pre_add_studentprofile";	
+		else if(activeId=='tab4default')
+		tableName="pc_choice_mast";	
+		else if(activeId=='tab5default')
+		tableName="pc_doc_attachment_mast";	
+		var jsonObject="";
+		if($("#flag").val()=='LE-UG' || $("#flag").val()=='LE-PG')
+		 jsonObject={"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"tableName":tableName,"formStatus":activeId,"eligibility":$("#elibty").val(),"pdFlag":$("#pdflag").val()};
+	     else
+	     jsonObject={"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"tableName":tableName,"formStatus":activeId,"pdFlag":$("#pdflag").val()};
+		 $.ajax({
+	          type: "POST",
+			  url: "../userRegistration/checkRecordSaved.html",
+			  contentType: 'application/json',
+			  data:JSON.stringify(jsonObject),
+			  dataType: 'json',
+			  async: false,
+	          success: function (data) {
+	        	  if(data.status==401){
+	        		  window.location ="../SessionExp.jsp";
+	        	  }else{
+	        	  if(data.status==true)
+	        		  {
+	        		    var $active = $('.nav-tabs li.active');
+	        	        $active.next().removeClass('disabled');
+	        		    nextTab($active);
+	        		   //$('.nav-tabs > .active').next('li').find('a').trigger('click');
+	        		  }
+	        	  else{
+	        		  alert("Please save record on current tab before going on next tab")
+	        	     }
+	          }},
+	          error: function (data) {
+	              alert("Error");
+	          }
+	      });
+		});
+		  
+	 /*$('.btnPrevious').click(function(){
+		  $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+	
+	});*/
+	
+	$(".btnPrevious").click(function (e) {
+
+        var $active = $('.nav-tabs li.active');
+        
+        prevTab($active);
+
+    }); 
+	
+	
+	
+$('.btnReset').click(function(){    /* -- call on Reset button -- */ 
+	   var pageType= $("#pageType").val(); 
+	   if(pageType=='inner')
+	   document.location.href="../index.jsp";	
+	   else if(pageType=='outer')
+	   document.location.href="index.jsp";	 
+	   else{
+		   var $activeTab = $('.tab-content .tab-pane.active');
+		   localStorage.setItem('activeTab', "#"+$activeTab.attr('id'));
+		   location.reload();
+	   }
+	 
+		   
+});	
+ 
+var pageType= $("#pageType").val(); 
+if(pageType==''){
+$('#myTab a[href="' + localStorage.getItem('activeTab') + '"]').tab('show');
+}
+
+$('#btnLoginReset').click(function(){    /* -- call on Reset button -- */ 
+	
+	   var pageType= $("#pageType").val(); 
+	   if(pageType=='inner')
+	   document.location.href="../loginUser.jsp";	
+	   else
+	   document.location.href="loginUser.jsp";	 
+			
+});	
+
+$('#btnReg').click(function(){    /* -- call on click on registration button -- */ 
+	
+	   var pageType= $("#pageType").val(); 
+	   if(pageType=='inner')
+	   document.location.href="../index.jsp";	
+	   else
+	   document.location.href="index.jsp";	 
+			
+});	
+
+	$('#btnRegister').click(function(){ 			 /* This function is used to registered a new user */     
+		
+		
+		try{
+			var finalArr = [];
+			/* $.each($("#course option:selected"), function(){            
+				 finalArr.push($(this).val());
+		        });
+			*/
+	      
+			if($('#sFName').val()=='')
+		  {
+			 $('#sFName').focus();
+			 showerr1($("#sFName")[0], "Name is required!","block");   
+		     return false;
+		  }
+		  else if(!acceptOnlyCharacters($('#sFName').val()))
+		  {
+		    	 $('#sFName').focus();
+		    	 showerr1($('#sFName')[0], "Name should be character!","block");
+				 return false;
+		  } 
+		 else if($('#email').val()=='')
+		 {
+	    	 $('#email').focus();
+	    	 showerr1($("#email")[0], "Email is required!","block");
+			    return false;
+	     } 
+		 else if(!EmailValidation().test($('#email').val()))
+		 {
+	    	 $('#email').focus();
+	    	 showerr1($("#email")[0], "Email is incorrect!","block");
+			 return false;
+	     } 	
+		else if($('#mobile').val()=='')
+		  {
+			 $('#mobile').focus();    
+			 showerr1($("#mobile")[0], "Mobile No. is required!","block"); 
+		     return false;
+		  }
+		else if(!validatedMobileNo($('#mobile').get(0),'Mobile No.'))
+		  {
+			 return false;
+		  }
+		else if(parseInt($('#mobile').val().length)<10 || parseInt($('#mobile').val().length)>10)
+		  {
+			 $('#mobile').focus();    
+			 showerr1($("#mobile")[0], "Mobile No. must be 10 digit!","block"); 
+		     return false;
+		  }
+		else if($('#course_typ').val()=='')
+		  {
+			 $('#course_typ').focus();    
+			 showerr1($("#course_typ")[0], "Course Type is required!","block"); 
+		     return false;
+		  }
+		else if($('#courseId').val()=='')
+		  {
+			 $('#courseId').focus();    
+			 showerr1($("#courseId")[0], "Course is required!","block"); 
+		     return false;
+		  }
+		else if($('#mrn').val()=='')
+		  {
+			 $('#mrn').focus();    
+			 showerr1($("#mrn")[0], "Roll No.(10th) is required!","block"); 
+		     return false;
+		  }
+		else if(!validatedMobileNo($('#mrn').get(0),'Roll No.(10th)'))
+		  {
+			 return false;
+		  }
+		 /*else if(parseInt($('#mrn').val().length)<11 || parseInt($('#mrn').val().length)>11)
+		  {
+			 $('#mobile').focus();    
+			 showerr1($("#mobile")[0], "Roll No.(10th) must be 11 digit!","block"); 
+		     return false;
+		  }*/
+		/*else if($('#OTP').val()=='')
+		  {
+			 $('#OTP').focus();    
+			 showerr1($("#OTP")[0], "Otp is required!","block"); 
+		     return false;
+		  }*/
+		/*else if(finalArr.length==0)
+		  {
+			document.getElementById("errMsg").innerHTML="<center><strong>At least one course must be selected!</strong></center>";
+	        clearSuccessMessageAfterTenSecond("errMsg");
+	        return false;
+			   showerr1($("#course")[0], "At least one course must be selected!","block"); 
+		        return false;
+		  }
+		else if(finalArr.length>3)
+		  {
+			document.getElementById("errMsg").innerHTML="<center><strong>Maximum 3 Course(s) can be select!</strong></center>";
+	        clearSuccessMessageAfterTenSecond("errMsg");
+			   showerr1($("#course")[0], "Maximum 3 Course(s) can be select!","block"); 
+		       return false;
+		  } commented by karan on 13/03/2019 suggested by vijay */
+		else if($('#password').val()=='')
+		  {
+			  $('#password').focus();   
+			  showerr1($("#password")[0], "Password is required!","block"); 
+		      
+		        return false;
+		  }
+		/*else if(parseInt($('#password').val().length)<8)
+		  {
+			  $('#password').focus();   
+			  showerr1($("#password")[0], "Password must be between 8 to 15!","block"); 
+		      return false;
+		  }	*/
+		else if(!checkContainOneCharOneNumberOneSpacialChar().test($('#password').val()) || ($('#password').val().length)<8)
+		  {
+			  $('#password').focus();   
+			  showerr1($("#password")[0], "Password contain at least one letter, one number and one special character and between 8 to 15 character!","block"); 
+		      return false;
+		  }
+		
+		else if($('#cpassword').val()=='')
+		  {
+			    showerr1($("#cpassword")[0], "Confirm password is required!","block"); 
+		        $('#cpassword').focus();
+		        return false;
+		  }
+		else if($('#password').val()!=$('#cpassword').val()){
+			    showerr1($("#cpassword")[0], "Confirm password should be match!","block"); 
+		        $('#cpassword').focus();
+		        return false;
+		}
+		/*else if($('#reference').val()==''){
+		    showerr1($("#reference")[0], "Reference should is required!","block"); 
+	        $('#reference').focus();
+	        return false;
+	    }*/
+		else if($('#captcha_code').val()==''){
+		    showerr1($("#captcha_code")[0], "Captcha is required!","block"); 
+	        $('#captcha_code').focus();
+	        return false;
+	     }	
+		
+		else 
+		  {
+			  /* var webServiceUrl=$("#webServiceUrl").val();
+			   getCurrentFinancialYear(webServiceUrl);*/
+			   var pageType= $("#pageType").val(); 
+			   if(pageType=='inner')
+			   document.register.action = "../userRegistration/register.html";
+			   else
+			   document.register.action = "userRegistration/register.html";	   
+			   document.register.submit(); 
+			 
+		  }}catch(err){
+			alert(err);
+		}
+	});
+	
+	
+	$('#dob').datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        todayHighlight:true,
+        endDate: '+0d',
+    }).on('click', function () {
+        $("#dob").datepicker("setDate", ''); 
+        $("#dob").defaultDate(new Date()); 
+    }).on('clearDate', function (selected) {
+    });
+	
+$('#btnLogin').click(function(){ 			 /* This function is used to registered a new user */     
+		
+		try{
+	
+		 if($('#email').val()=='')
+		 {
+	    	 $('#email').focus();
+	    	 showerr1($("#email")[0], "Application No. is required!","block");
+			    return false;
+	     } 
+		else if($('#password').val()=='')
+		  {
+			  $('#password').focus();   
+			  showerr1($("#password")[0], "Password is required!","block"); 
+		      return false;
+		  }
+		else 
+		  {
+			   var pageType= $("#pageType").val(); 
+			   if(pageType=='inner')
+			   document.login.action = "../userRegistration/login.html";
+			   else
+			   document.login.action = "userRegistration/login.html";	   
+			   document.login.submit();
+		  }}catch(err){
+			alert(err);
+		}
+	});
+	
+$('#btnSavePersonalDetail').click(function(){ 			 /* This function is used save student personal detail */     
+	
+	try{
+	  var eligibityFlag=true;
+		if($('#sFName').val()=='')
+	  {
+		 $('#sFName').focus();
+		 showerr("txt"+$("#sFName")[0], "First Name is required!","block");   
+	     return false;
+	  }
+	 else if($('#sAadharNo').val()!='' && !IsInteger($("#sAadharNo").get(0),'Aadhar'))
+      {
+    			 return false;
+      } 
+	else if($('#sAadharNo').val()!='' && $('#sAadharNo').val().length<12)
+	  {
+			    $('#sAadharNo').focus();
+			    showerr($("#sAadharNo")[0], "Aadhar must be 12 digit!","block"); 
+		        return false;  
+	  }
+	else if($('#gender').val()=='')
+	  {
+		    $('#gender').focus();
+		    showerr($("#gender")[0], "Gender is required!","block"); 
+	        return false;
+	  }
+		
+	else if($('#dob').val()=='')
+	  {
+		    $('#dob').focus();
+		    showerr2($("#dob")[0], "Date of birth is required!","block"); 
+		   // ($('#dob').css('margin-left','0px !important');
+	        return false;
+	  }
+	else if($('#sFatherName').val()=='')
+	  {
+		    $('#sFatherName').focus();
+		    showerr($("#sFatherName")[0], "Father's name is required!","block"); 
+	        return false;
+	  }
+	 else if(!acceptOnlyCharacters($('#sFatherName').val()))
+	  {
+	    	 $('#sFatherName').focus();
+	    	 showerr($('#sFatherName')[0], "Father's should be character!","block");
+			 return false;
+	  } 
+	 else if($('#sMotherName').val()=='')
+	 {
+    	 $('#sMotherName').focus();
+    	 showerr($("#sMotherName")[0], "Mother's name is required!","block");
+		 return false;
+     } 
+	 else if(!acceptOnlyCharacters($('#sMotherName').val()))
+	  {
+	    	 $('#sMotherName').focus();
+	    	 showerr($('#sMotherName')[0], "Mother's should be character!","block");
+			 return false;
+	  } 
+	/* else if($('#mrn').val()=='')
+	  {
+	    	 $('#mrn').focus();
+	    	 showerr($('#mrn')[0], "Matriculation Roll No. is required!","block");
+			 return false;
+	  } 	
+	 else if(parseInt($('#mrn').val())<=0)
+	    {
+    	  $('#mrn').focus();
+    	  showerr($('#mrn')[0], "Matriculation Roll No. should be greater than zero(s)!","block");
+		  return false;
+	    }*/
+	 else if($('#lcty').val()=='')
+	  {
+		 $('#lcty').focus();    
+		 showerr($("#lcty")[0], "Locality is required!","block"); 
+	     return false;
+	  }
+	 else if($('#address').val()=='')
+	  {
+		 $('#address').focus();    
+		 showerr($("#address")[0], "Address is required!","block"); 
+	     return false;
+	  }
+	else if($('#sState').val()=='')
+	  {
+		 $('#sState').focus();    
+		 showerr($("#sState")[0], "State is required!","block"); 
+	     return false;
+	  }
+	else if($('#sCity').val()=='')
+	  {
+		 $('#sCity').focus();    
+		 showerr($("#sCity")[0], "City is required!","block"); 
+	     return false;
+	  }
+	else if($('#flag').val()!='UG' && $('#flag').val()!='PG' && $('#flag').val()!='UG-TFW' && $('#flag').val()!='PG-TFW')
+	  {
+	
+		 if($('#elibty').val()=='')
+		 {
+		   eligibityFlag=false;
+	       $('#elibty').focus();    
+		   showerr($("#elibty")[0], "Eligibility is required!","block"); 
+	       return false;
+		 }
+	  }
+	
+	if(eligibityFlag) 
+	  {
+		var jsonObject="";
+		 if(eligibityFlag){
+		  jsonObject={"sFName":$("#sFName").val(),"sFatherName":$("#sFatherName").val(),
+				 "sMotherName":$("#sMotherName").val(),"gender":$("input[name='gender']:checked"). val(),"email":$("#email").val(),"dob":$("#dob").val(),
+				 "mobile":$("#mobile").val(),"sState":$("#sState").val(),"sCity":$("#sCity").val(),"sAadharNo":$("#sAadharNo").val(),
+				 "address":$("#address").val(),"pdFlag":$("#pdflag").val(),"eligibility":$("#elibty").val(),"lcty":$('#lcty').val()};
+		 }else{
+			  jsonObject={"sFName":$("#sFName").val(),"sFatherName":$("#sFatherName").val(),
+						 "sMotherName":$("#sMotherName").val(),"gender":$("input[name='gender']:checked"). val(),"email":$("#email").val(),"dob":$("#dob").val(),
+						 "mobile":$("#mobile").val(),"sState":$("#sState").val(),"sCity":$("#sCity").val(),"sAadharNo":$("#sAadharNo").val(),
+						 "address":$("#address").val(),"pdFlag":$("#pdflag").val(),"lcty":$('#lcty').val()}; 
+		 }
+		 
+		 
+		      $.ajax({
+		          type: "POST",
+				  url: "../userRegistration/saveUserPersonalInfo.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        	  if(data.flag==true){
+		        		  $("#pdflag").val("true");
+		        		  $("#btnSavePersonalDetail").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>'); 
+		        	  }
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg");
+		             }
+		          },
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+		
+	  }}catch(err){
+		alert(err);
+	}
+});
+
+	
+$('#saveAcademicDetail').click(function(){ 			 /* This function is used save student personal detail */     
+	
+	try{
+	     var countOfAcademicList=parseInt($("#countOfAcademic").val());
+	     var subject=$("#subject").val();
+	     var result = subject.substring(1, subject.length-1);
+	     var subjectList=result.split(",");
+	     var JSONQury = {};
+	     var finalJSONArray = [];
+	     var finalSemesterJSONArray = [];
+	     var finalUgJSONArray = [];
+	     var count=0;
+	     var finalArr = [];
+	     var sessionArray=[];
+	     var subjectArray=[];
+	        $("input:checkbox[class=checkBoxClass2]:checked").each(function () {
+	      	  finalArr.push($(this).val());
+	          });
+	       
+	        if($("#flag").val()!='LE-UG')
+	        {
+	        for(var index=1; index<=countOfAcademicList; index++)
+		     {   
+	        	
+	           if($("#qualification"+index).val()=='')
+	      	   {
+	      		 $("#qualification"+index).focus();    
+	      		 showerr($("#qualification"+index)[0], "Qualification is required!","block"); 
+	      	     return false;
+	      	   }
+	           else if($("#board"+index).val()==''){
+	        	   $("#board"+index).focus();    
+		      		showerr($("#board"+index)[0], "Borad is required!","block"); 
+		      	    return false;
+	           }
+	           else if($("#passing_year"+index).val()==''){
+	        	    $("#passing_year"+index).focus();    
+		      		showerr($("#passing_year"+index)[0], "Passing year is required!","block"); 
+		      	    return false;
+	           }else if(sessionArray.includes($("#passing_year"+index).val()) || parseInt(sessionArray[0])>parseInt($("#passing_year"+index).val()))
+	           {
+	        	    $("#passing_year"+index).focus();    
+		      		showerr($("#passing_year"+index)[0], "Passing year can't be less then or equal to previous selected passing year!","block"); 
+		      	    return false;
+	           }
+	           else if($("#school"+index).val()==''){
+	        	   $("#school"+index).focus();    
+		      		showerr($("#school"+index)[0], "School is required!","block"); 
+		      	    return false;
+	           }
+	           else if(!acceptOnlyCharacters($('#school'+index).val()))
+	     	  {
+	     	    	 $('#school'+index).focus();
+	     	    	 showerr($('#school'+index)[0], "School accept only character!","block");
+	     			 return false;
+	     	  } 
+	           else if($('#quliTotal'+index).val().trim()=='')
+		     	  {
+		     	    	 $('#quliTotal'+index).focus();
+		     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) is required!","block");
+		     			 return false;
+		     	  } 
+	           else if(!IsInteger($('#quliTotal'+index).get(0),'Total marks (Qualification)'))
+		     	  {
+		     			 return false;
+		     	  } 
+	           else if(parseInt($('#quliTotal'+index).val().trim())<=0)
+		     	  {
+		     	    	 $('#quliTotal'+index).focus();
+		     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) should be greater than zero(s)!","block");
+		     			 return false;
+		     	  } 
+	           else if($("#quliObt"+index).val().trim()=='')
+      		    {
+      		       $("#quliObt"+index).focus();    
+	      		   showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) is required!","block"); 
+	      	       return false;
+      		    }
+	           else if(!IsInteger($('#quliObt'+index).get(0),'Obtain marks (Qualification)'))
+		     	  {
+		     			 return false;
+		     	  } 
+      	     else if(parseInt($("#quliObt"+index).val().trim())<=0)
+  		     {
+  		      $("#quliObt"+index).focus();    
+    		  showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) should be greater than zero(s)!","block"); 
+    	      return false;
+  		      }
+      	     
+	            sessionArray.push($("#passing_year"+index).val().trim());
+	            if(index!=1)
+	            {
+		         for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+		    	 { 
+		        
+		          var totObtain=($("#tot_mks"+subjectIndex+index).val()).trim();
+	        	  var obt_mks=($("#obt_mks"+subjectIndex+index).val()).trim();
+	        	  if($("#sub"+subjectIndex+index).val()=='')
+			     {
+			       $("#sub"+subjectIndex+index).focus();    
+	  		       showerr($("#sub"+subjectIndex+index)[0], "Subject is required!","block"); 
+	  	           return false;
+			      }
+	        	  else if(subjectArray.includes($("#sub"+subjectIndex+index).val()))
+		           {
+		        	    $("#sub"+subjectIndex+index).focus();    
+			      		showerr($("#sub"+subjectIndex+index)[0], "Duplicate subject can't be select!","block"); 
+			      	    return false;
+		           }
+	        	  else if(($("#tot_mks"+subjectIndex+index).val()).trim()=='')
+		      	   {
+	        		 $("#tot_mks"+subjectIndex+index).focus();    
+		      		 showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks is required!","block"); 
+		      	     return false;
+		      	   }
+	        	  else if(!IsInteger($('#tot_mks'+subjectIndex+index).get(0),'Total marks'))
+		     	  {
+		     			 return false;
+		     	  } 
+	        	 else if(parseInt(totObtain)<=0)
+	        		 {
+	        		  $("#tot_mks"+subjectIndex+index).focus();    
+		      		  showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks should be greater than zero(s)!","block"); 
+		      	      return false;
+	        		 }
+	        	 else if(($("#obt_mks"+subjectIndex+index).val()).trim()=='')
+	        		 {
+	        		   $("#obt_mks"+subjectIndex+index).focus();    
+		      		   showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks is required!","block"); 
+		      	       return false;
+	        		 }
+	        	 else if(!IsInteger($('#obt_mks'+subjectIndex+index).get(0),'Obtain marks'))
+		     	  {
+		     			 return false;
+		     	  } 
+	        	 else if(parseInt(obt_mks)<=0)
+        		 {
+        		  $("#obt_mks"+subjectIndex+index).focus();    
+	      		  showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks should be greater than zero(s)!","block"); 
+	      	      return false;
+        		 }
+	        	 else if(($("#per_mks"+subjectIndex+index).val()).trim()=='')
+        		 {
+        		   $("#per_mks"+subjectIndex+index).focus();    
+	      		   showerr($("#per_mks"+subjectIndex+index)[0], "Percentage is required!","block"); 
+	      	       return false;
+        		 }
+	        	 
+	        	  subjectArray.push($("#sub"+subjectIndex+index).val());
+		    	 }   
+		     }
+		    }
+	        }else{
+	        		 if($("#elibty").val()=='10+')
+	 	        	{
+	        			
+	        		   for(var index=1; index<=countOfAcademicList; index++)
+	    			     {   
+	        			 if(index!=2){
+	        		  if($("#qualification"+index).val()=='')
+		      	      {
+		      		 $("#qualification"+index).focus();    
+		      		 showerr($("#qualification"+index)[0], "Qualification is required!","block"); 
+		      	     return false;
+		      	   }
+		           else if($("#board"+index).val()==''){
+		        	   $("#board"+index).focus();    
+			      		showerr($("#board"+index)[0], "Borad is required!","block"); 
+			      	    return false;
+		           }
+		           else if($("#passing_year"+index).val()==''){
+		        	    $("#passing_year"+index).focus();    
+			      		showerr($("#passing_year"+index)[0], "Passing year is required!","block"); 
+			      	    return false;
+		           }else if(sessionArray.includes($("#passing_year"+index).val()) || parseInt(sessionArray[0])>parseInt($("#passing_year"+index).val()))
+		           {
+		        	    $("#passing_year"+index).focus();    
+			      		showerr($("#passing_year"+index)[0], "Passing year can't be less then or equal to previous selected passing year!","block"); 
+			      	    return false;
+		           }
+		           else if($("#school"+index).val()==''){
+		        	   $("#school"+index).focus();    
+			      		showerr($("#school"+index)[0], "School is required!","block"); 
+			      	    return false;
+		           }
+		           else if(!acceptOnlyCharacters($('#school'+index).val()))
+		     	  {
+		     	    	 $('#school'+index).focus();
+		     	    	 showerr($('#school'+index)[0], "School accept only character!","block");
+		     			 return false;
+		     	  } 
+		           else if($('#quliTotal'+index).val().trim()=='')
+			     	  {
+			     	    	 $('#quliTotal'+index).focus();
+			     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) is required!","block");
+			     			 return false;
+			     	  } 
+		           else if(!IsInteger($('#quliTotal'+index).get(0),'Total marks (Qualification)'))
+			     	  {
+			     			 return false;
+			     	  } 
+		           else if(parseInt($('#quliTotal'+index).val().trim())<=0)
+			     	  {
+			     	    	 $('#quliTotal'+index).focus();
+			     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) should be greater than zero(s)!","block");
+			     			 return false;
+			     	  } 
+		           else if($("#quliObt"+index).val().trim()=='')
+	      		    {
+	      		       $("#quliObt"+index).focus();    
+		      		   showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) is required!","block"); 
+		      	       return false;
+	      		    }
+		           else if(!IsInteger($('#quliObt'+index).get(0),'Obtain marks (Qualification)'))
+			     	  {
+			     			 return false;
+			     	  } 
+	      	     else if(parseInt($("#quliObt"+index).val().trim())<=0)
+	  		     {
+	  		      $("#quliObt"+index).focus();    
+	    		  showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) should be greater than zero(s)!","block"); 
+	    	      return false;
+	  		      }
+	      	  
+		            sessionArray.push($("#passing_year"+index).val().trim());
+		            if(index!=1)
+		            {
+			         for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+			    	 { 
+			         
+			         var totObtain=($("#tot_mks"+subjectIndex+index).val()).trim();
+		        	 var obt_mks=($("#obt_mks"+subjectIndex+index).val()).trim();
+		        	  if($("#sub"+subjectIndex+index).val()=='')
+				     {
+				       $("#sub"+subjectIndex+index).focus();    
+		  		       showerr($("#sub"+subjectIndex+index)[0], "Subject is required!","block"); 
+		  	           return false;
+				      }
+		        	  else if(($("#tot_mks"+subjectIndex+index).val()).trim()=='')
+			      	   {
+		        		 $("#tot_mks"+subjectIndex+index).focus();    
+			      		 showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks is required!","block"); 
+			      	     return false;
+			      	   }
+		        	  else if(!IsInteger($('#tot_mks'+subjectIndex+index).get(0),'Total marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+		        	 else if(parseInt(totObtain)<=0)
+		        		 {
+		        		  $("#tot_mks"+subjectIndex+index).focus();    
+			      		  showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks should be greater than zero(s)!","block"); 
+			      	      return false;
+		        		 }
+		        	 else if(($("#obt_mks"+subjectIndex+index).val()).trim()=='')
+		        		 {
+		        		   $("#obt_mks"+subjectIndex+index).focus();    
+			      		   showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks is required!","block"); 
+			      	       return false;
+		        		 }
+		        	 else if(!IsInteger($('#obt_mks'+subjectIndex+index).get(0),'Obtain marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+		        	 else if(parseInt(obt_mks)<=0)
+	        		 {
+	        		  $("#obt_mks"+subjectIndex+index).focus();    
+		      		  showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks should be greater than zero(s)!","block"); 
+		      	      return false;
+	        		 }
+		        	 else if(($("#per_mks"+subjectIndex+index).val()).trim()=='')
+	        		 {
+	        		   $("#per_mks"+subjectIndex+index).focus();    
+		      		   showerr($("#per_mks"+subjectIndex+index)[0], "Percentage is required!","block"); 
+		      	       return false;
+	        		 } 
+		        	
+		        	}   
+			     }
+			    }
+	    	 }		 
+			     }
+	        		 else if($("#elibty").val()=='12+'){
+	        			
+	        			 for(var index=1; index<=countOfAcademicList; index++)
+	    			     {   
+	        				
+	  		           if($("#qualification"+index).val()=='')
+	  		      	   {
+	  		      		 $("#qualification"+index).focus();    
+	  		      		 showerr($("#qualification"+index)[0], "Qualification is required!","block"); 
+	  		      	     return false;
+	  		      	   }
+	  		           else if($("#board"+index).val()==''){
+	  		        	   $("#board"+index).focus();    
+	  			      		showerr($("#board"+index)[0], "Borad is required!","block"); 
+	  			      	    return false;
+	  		           }
+	  		           else if($("#passing_year"+index).val()==''){
+	  		        	    $("#passing_year"+index).focus();    
+	  			      		showerr($("#passing_year"+index)[0], "Passing year is required!","block"); 
+	  			      	    return false;
+	  		           }else if(sessionArray.includes($("#passing_year"+index).val()) || parseInt(sessionArray[0])>parseInt($("#passing_year"+index).val()))
+	  		           {
+	  		        	    $("#passing_year"+index).focus();    
+	  			      		showerr($("#passing_year"+index)[0], "Passing year can't be less then or equal to previous selected passing year!","block"); 
+	  			      	    return false;
+	  		           }
+	  		           else if($("#school"+index).val()==''){
+	  		        	   $("#school"+index).focus();    
+	  			      		showerr($("#school"+index)[0], "School is required!","block"); 
+	  			      	    return false;
+	  		           }
+	  		           else if(!acceptOnlyCharacters($('#school'+index).val()))
+	  		     	  {
+	  		     	    	 $('#school'+index).focus();
+	  		     	    	 showerr($('#school'+index)[0], "School accept only character!","block");
+	  		     			 return false;
+	  		     	  } 
+	  		           else if($('#quliTotal'+index).val().trim()=='')
+	  			     	  {
+	  			     	    	 $('#quliTotal'+index).focus();
+	  			     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) is required!","block");
+	  			     			 return false;
+	  			     	  } 
+	  		         else if(!IsInteger($('#quliTotal'+index).get(0),'Total marks (Qualification)'))
+			     	  {
+			     			 return false;
+			     	  } 
+	  		           else if(parseInt($('#quliTotal'+index).val().trim())<=0)
+	  			     	  {
+	  			     	    	 $('#quliTotal'+index).focus();
+	  			     	    	 showerr($('#quliTotal'+index)[0], "Total marks (Qualification) should be greater than zero(s)!","block");
+	  			     			 return false;
+	  			     	  } 
+	  		           else if($("#quliObt"+index).val().trim()=='')
+	  	      		    {
+	  	      		    $("#quliObt"+index).focus();    
+	  		      		   showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) is required!","block"); 
+	  		      	       return false;
+	  	      		    }
+	  		         else if(!IsInteger($('#quliObt'+index).get(0),'Obtain marks (Qualification)'))
+			     	  {
+			     			 return false;
+			     	  } 
+	  	      	     else if(parseInt($("#quliObt"+index).val().trim())<=0)
+	  	  		     {
+	  	  		      $("#quliObt"+index).focus();    
+	  	    		  showerr($("#quliObt"+index)[0], "Obtain marks (Qualification) should be greater than zero(s)!","block"); 
+	  	    	      return false;
+	  	  		      }
+	  	      	  
+	  		            sessionArray.push($("#passing_year"+index).val().trim());
+	  		            if(index!=1)
+	  		            {
+	  			         for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+	  			    	 { 
+	  			         
+	  			         var totObtain=($("#tot_mks"+subjectIndex+index).val()).trim();
+	  		        	 var obt_mks=($("#obt_mks"+subjectIndex+index).val()).trim();
+	  		        	  if($("#sub"+subjectIndex+index).val()=='')
+	  				     {
+	  				       $("#sub"+subjectIndex+index).focus();    
+	  		  		       showerr($("#sub"+subjectIndex+index)[0], "Subject is required!","block"); 
+	  		  	           return false;
+	  				      }
+	  		        	 else if(subjectArray.includes($("#sub"+subjectIndex+index).val()))
+	  		            {
+	  		        	    $("#sub"+subjectIndex+index).focus();    
+	  			      		showerr($("#sub"+subjectIndex+index)[0], "Duplicate subject can't be select!","block"); 
+	  			      	    return false;
+	  		             }
+	  		        	  else if(($("#tot_mks"+subjectIndex+index).val()).trim()=='')
+	  			      	   {
+	  		        		 $("#tot_mks"+subjectIndex+index).focus();    
+	  			      		 showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks is required!","block"); 
+	  			      	     return false;
+	  			      	   }
+	  		        	 else if(!IsInteger($('#tot_mks'+subjectIndex+index).get(0),'Total marks'))
+				     	  {
+				     			 return false;
+				     	  } 
+	  		        	 else if(parseInt(totObtain)<=0)
+	  		        		 {
+	  		        		  $("#tot_mks"+subjectIndex+index).focus();    
+	  			      		  showerr($("#tot_mks"+subjectIndex+index)[0], "Total marks should be greater than zero(s)!","block"); 
+	  			      	      return false;
+	  		        		 }
+	  		        	 else if(($("#obt_mks"+subjectIndex+index).val()).trim()=='')
+	  		        		 {
+	  		        		   $("#obt_mks"+subjectIndex+index).focus();    
+	  			      		   showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks is required!","block"); 
+	  			      	       return false;
+	  		        		 }
+	  		        	 else if(!IsInteger($('#obt_mks'+subjectIndex+index).get(0),'Obtain marks'))
+				     	  {
+				     			 return false;
+				     	  } 
+	  		        	 else if(parseInt(obt_mks)<=0)
+	  	        		 {
+	  	        		  $("#obt_mks"+subjectIndex+index).focus();    
+	  		      		  showerr($("#obt_mks"+subjectIndex+index)[0], "Obtain marks should be greater than zero(s)!","block"); 
+	  		      	      return false;
+	  	        		 }
+	  		        	 else if(($("#per_mks"+subjectIndex+index).val()).trim()=='')
+	  	        		 {
+	  	        		   $("#per_mks"+subjectIndex+index).focus();    
+	  		      		   showerr($("#per_mks"+subjectIndex+index)[0], "Percentage is required!","block"); 
+	  		      	       return false;
+	  	        		 } 
+	  		        	 
+	  		        	 subjectArray.push($("#sub"+subjectIndex+index).val()); 
+	  			    	 }   
+	  			     }
+	        		 }
+	        		 }
+			     
+	        	
+	        }
+	        
+	        
+	        if($("#flag").val()=='PG')
+		     {
+	        	var roll=$("#roll").val();
+		        if($("#roll").val()=='')
+	        	 {
+		           $("#roll").focus();    
+   		      	   showerr($("#roll")[0], "Roll No. is required!","block"); 
+   		      	   return false;
+	        	 }
+		        else if(!IsInteger($('#roll').get(0),'Roll No.'))
+		     	  {
+		     			 return false;
+		     	  } 
+		        else if(parseInt(roll)<=0)
+       		    {
+	        		  $("#roll").focus();    
+		      		  showerr($("#roll")[0], "Roll No. should be greater than zero(s)!","block"); 
+		      	      return false;
+	        	 }
+		        else if($("#stream").val()==''){
+		        	   $("#stream").focus();    
+   		      	   showerr($("#stream")[0], "Stream is required!","block"); 
+   		      	   return false;
+		        } /*else if(!acceptOnlyCharacters($('#stream').val())){
+		        	   $("#stream").focus();    
+	   		      	   showerr($("#stream")[0], "Stream should be character!","block"); 
+	   		      	   return false;
+			        }*/
+		        else if($("#uni").val()==''){
+		        	 $("#uni").focus();    
+	   		      	   showerr($("#uni")[0], "Name Of University is required!","block"); 
+	   		      	   return false;
+		     }else if(!acceptOnlyCharacters($('#uni').val())){
+		    	   $("#uni").focus();    
+ 		      	   showerr($("#uni")[0], "Name Of University should be character!","block"); 
+ 		      	   return false;
+		     } else if($("#passing_year").val()=='')
+		    	 {
+		    	    $("#passing_year").focus();    
+ 		      	   showerr($("#passing_year")[0], "Passing Year is required!","block"); 
+ 		      	   return false;
+		    	 }
+		     else if($("#criteria").val()=='0')
+	    	 {
+	    	    $("#criteria").focus();    
+		      	   showerr($("#criteria")[0], "Criteria is required!","block"); 
+		      	   return false;
+	    	 }
+		
+		       
+		        if($("#criteria").val()=='1')
+		    	 {
+			    	   if($("#cgpa").val()==''){
+		    	        $("#cgpa").focus();    
+			      	   showerr($("#cgpa")[0], "CGPA is required!","block"); 
+			      	   return false;
+			    	   }else if($("#mf").val()==''){
+			    		   $("#mf").focus();    
+				      	   showerr($("#mf")[0], "Multiplying Factor is required!","block"); 
+				      	   return false;
+			    	   }
+			    	   else if($("#per_mks").val()=='')
+		       		    {
+			    		  $("#per_mks").focus();    
+			      		  showerr($("#per_mks")[0], "Percentage is required!","block"); 
+			      	      return false;
+		        	    }
+			    	  
+		    	 }
+		      if($("#criteria").val()=='2')
+		    	 {
+		    	  var tot=$("#tot_mks").val().trim();
+		    	  var obt=$("#obt_mks").val().trim();
+		    	   if($("#tot_mks").val().trim()==''){
+		    	        $("#tot_mks").focus();    
+			      	   showerr($("#tot_mks")[0], "Total Marks is required!","block"); 
+			      	   return false;
+			    	   }
+		    	   else if(!IsInteger($('#tot_mks').get(0),'Total Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+		    	   else if(parseInt(tot)<=0)
+	       		    {
+		        		  $("#tot_mks").focus();    
+			      		  showerr($("#tot_mks")[0], "Total Marks should be greater than zero(s)!","block"); 
+			      	      return false;
+		        	 }else if($("#obt_mks").val().trim()==''){
+			    		   $("#obt_mks").focus();    
+				      	   showerr($("#obt_mks")[0], "Obtained Marks is required!","block"); 
+				      	   return false;
+			    	   }
+		        	 else if(!IsInteger($('#obt_mks').get(0),'Obtained Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+		        	 else if(parseInt(obt)<=0){
+			    		   $("#obt_mks").focus();    
+				      	   showerr($("#obt_mks")[0], "Obtained Marks should be greater than zero(s)!","block"); 
+				      	   return false;
+			    	   }
+		        	 
+		    	   
+		    	 }
+		    } 
+	        
+	        
+	        if(($("#flag").val()=='LE-UG' && $("#elibty").val()=='10+') || ($("#flag").val()=='LE-UG' && $("#elibty").val()=='12+') )
+	        {
+	        	
+	        	var loopCount=0;
+	        	var passing_year=0;
+	        	if($("#elibty").val()=='12+')
+	        		{
+	        		  loopCount=4;
+	        		  passing_year=sessionArray[1];
+	        		}
+	        	else
+	        	{  
+	        		loopCount=6;
+	        		passing_year=sessionArray[0];
+	        	}
+	        	if($("#semQuali").val().trim()=='')
+	        	{
+	        		 $("#semQuali").focus();    
+  		      	     showerr($("#semQuali")[0], "Qualification is required!","block"); 
+  		      	     return false;
+	        	}
+	        	else if($("#semSpecial").val().trim()==''){
+	        		 $("#semSpecial").focus();    
+  		      	     showerr($("#semSpecial")[0], "Specialization is required!","block"); 
+  		      	     return false;
+	        	}
+	        	else if($("#sem_passing_year").val().trim()==''){
+	        		 $("#sem_passing_year").focus();    
+ 		      	     showerr($("#sem_passing_year")[0], "Passing Year is required!","block"); 
+ 		      	     return false;
+	        	}
+	        	else if(sessionArray.includes($("#sem_passing_year").val()) || parseInt(passing_year)>parseInt($("#sem_passing_year").val()))
+		           {
+		        	    $("#sem_passing_year").focus();    
+			      		showerr($("#sem_passing_year")[0], "Diploma Passing year can't be less then or equal to academic passing year!","block"); 
+			      	    return false;
+		           }
+	        	else if($("#semTotal").val().trim()==''){
+	        		 $("#semTotal").focus();    
+		      	     showerr($("#semTotal")[0], "Total Marks diploma is required!","block"); 
+		      	     return false;
+	        	}
+	        	 else if(!IsInteger($('#semTotal').get(0),'Total Marks diploma'))
+		     	  {
+		     			 return false;
+		     	  } 
+	        	else if($("#semObt").val().trim()==''){
+	        		 $("#semObt").focus();    
+		      	     showerr($("#semObt")[0], "Obtained Marks diploma is required!","block"); 
+		      	     return false;
+	        	}
+	        	 else if(!IsInteger($('#semObt').get(0),'Obtained Marks diploma'))
+		     	  {
+		     			 return false;
+		     	  } 
+	        	else if($("#semPer").val().trim()==''){
+	        		 $("#semPer").focus();    
+		      	     showerr($("#semPer")[0], "Percentage is required!","block"); 
+		      	     return false;
+	        	}
+	        	 
+	        	for(index=1; index<=loopCount; index++){
+	        		
+	        		if($("#maxMarks"+index).val().trim()=='')
+        		    {
+    	        	   $("#maxMarks"+index).focus();    
+    		      	   showerr($("#maxMarks"+index)[0], "Total Marks is required!","block"); 
+    		      	   return false;
+    	            }
+	        		 else if(!IsInteger($("#maxMarks"+index).get(0),'Total Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+	        		else if($("#obtMarks"+index).val().trim()=='')
+        		    {
+    	        	   $("#obtMarks"+index).focus();    
+    		      	   showerr($("#obtMarks"+index)[0], "Obtained Marks is required!","block"); 
+    		      	   return false;
+    	            }
+	        		 else if(!IsInteger($("#obtMarks"+index).get(0),'Obtained Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+	        		else if($("#percentage"+index).val().trim()=='')
+        		    {
+    	        	   $("#percentage"+index).focus();    
+    		      	   showerr($("#percentage"+index)[0], "Percentage is required!","block"); 
+    		      	   return false;
+    	            }
+	        		
+	        		}	
+	        	
+	        	
+	        }
+	        if(finalArr.length>0){
+	        	   for(var entranceIndex=0; entranceIndex<finalArr.length; entranceIndex++)
+	          	 {    
+	        		   var rollNo=$("#rollNo"+finalArr[entranceIndex]).val().trim();
+	        		   if(finalArr[entranceIndex]==5 && $("#ent"+finalArr[entranceIndex]).val().trim()==''){
+	        			   $("#ent"+finalArr[entranceIndex]).focus();    
+	    		      	   showerr($("#ent"+finalArr[entranceIndex])[0], "Any Other entrance is required!","block"); 
+	    		      	   return false;
+	        		   }
+	        		   else if(finalArr[entranceIndex]==5 && $("#ent"+finalArr[entranceIndex]).val().trim()!='' && !acceptOnlyCharacters($("#ent"+finalArr[entranceIndex]).val())){
+	        			   $("#ent"+finalArr[entranceIndex]).focus();    
+	    		      	   showerr($("#ent"+finalArr[entranceIndex])[0], "Any Other entrance should be character!","block"); 
+	    		      	   return false;
+	        		   }
+	        		   else if($("#rollNo"+finalArr[entranceIndex]).val().trim()=='')
+	        		    {
+	    	        	   $("#rollNo"+finalArr[entranceIndex]).focus();    
+	    		      	   showerr($("#rollNo"+finalArr[entranceIndex])[0], "Roll No. is required!","block"); 
+	    		      	   return false;
+	    	            }
+	        		   else if(!IsInteger($("#rollNo"+finalArr[entranceIndex]).get(0),'Roll No.'))
+				     	  {
+				     			 return false;
+				     	  } 
+	        		   else if(parseInt(rollNo)<=0){
+			    		   $("#rollNo"+finalArr[entranceIndex]).focus();    
+				      	   showerr($("#rollNo"+finalArr[entranceIndex])[0], "Roll No. should be greater than zero(s)!","block"); 
+				      	   return false;
+			    	   }
+	        		   else if($("#year"+finalArr[entranceIndex]).val().trim()=='')
+	        		    {
+	    	        	   $("#year"+finalArr[entranceIndex]).focus();    
+	    		      	   showerr($("#year"+finalArr[entranceIndex])[0], "Passing Year is required!","block"); 
+	    		      	   return false;
+	    	            }
+	        		   else if($("#rank"+finalArr[entranceIndex]).val().trim()=='')
+	        		    {
+	    	        	   $("#rank"+finalArr[entranceIndex]).focus();    
+	    		      	   showerr($("#rank"+finalArr[entranceIndex])[0], "Rank is required!","block"); 
+	    		      	   return false;
+	    	            }
+	        		   else if(!IsInteger($("#rank"+finalArr[entranceIndex]).get(0),'Rank'))
+				     	  {
+				     			 return false;
+				     	  } 
+	        		    else if($("#score"+finalArr[entranceIndex]).val().trim()=='')
+	        		    {
+		    	        	   $("#score"+finalArr[entranceIndex]).focus();    
+		    		      	   showerr($("#score"+finalArr[entranceIndex])[0], "Score is required!","block"); 
+		    		      	   return false;
+		    	         }
+	        		    else if(!IsInteger($("#score"+finalArr[entranceIndex]).get(0),'Score'))
+				     	  {
+				     			 return false;
+				     	  } 
+	          	 }
+	           } 
+	        
+	        if($("#flag").val()=='LE-PG'){
+	        	
+	        	if($("#ugQuali").val().trim()=='')
+	        	{
+	        		 $("#ugQuali").focus();    
+  		      	     showerr($("#ugQuali")[0], "Degree is required!","block"); 
+  		      	     return false;
+	        	}
+	        	else if($("#ugSpec").val().trim()==''){
+	        		 $("#ugSpec").focus();    
+  		      	     showerr($("#ugSpec")[0], "Specialization is required!","block"); 
+  		      	     return false;
+	        	}
+	        	else if($("#ugPer").val().trim()==''){
+	        		 $("#ugPer").focus();    
+ 		      	     showerr($("#ugPer")[0], "Overall Percentage is required!","block"); 
+ 		      	     return false;
+	        	}
+                 for(index=1; index<=3; index++){
+	        		
+	        		if($("#ugMaxMarks"+index).val().trim()=='')
+        		    {
+    	        	   $("#ugMaxMarks"+index).focus();    
+    		      	   showerr($("#ugMaxMarks"+index)[0], "Max Marks is required!","block"); 
+    		      	   return false;
+    	            }
+	        		  else if(!IsInteger($("#ugMaxMarks"+index).get(0),'Max Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+	        		else if($("#ugObtMarks"+index).val().trim()=='')
+        		    {
+    	        	   $("#ugObtMarks"+index).focus();    
+    		      	   showerr($("#ugObtMarks"+index)[0], "Obtained Marks is required!","block"); 
+    		      	   return false;
+    	            }
+	        		  else if(!IsInteger($("#ugObtMarks"+index).get(0),'Obtained Marks'))
+			     	  {
+			     			 return false;
+			     	  } 
+	        		else if($("#ugPercentage"+index).val().trim()=='')
+        		    {
+    	        	   $("#ugPercentage"+index).focus();    
+    		      	   showerr($("#ugPercentage"+index)[0], "Percentage is required!","block"); 
+    		      	   return false;
+    	            }
+	        		  
+	        		}	
+	        }
+	        
+	        if($("#flag").val()!='LE-UG')
+	        {
+	        for(var index=1; index<=countOfAcademicList; index++)
+	        {   
+	    	 var JSONArray = [];
+	    	 var jsonObject={"qualification":$("#qualification"+index).val().trim(),"board":$("#board"+index).val().trim(),"passingYear":$("#passing_year"+index).val().trim(),"school":$("#school"+index).val().trim(),"quliPer":$("#quliPer"+index).val().trim(),"quliTotal":$("#quliTotal"+index).val().trim(),"quliObt":$("#quliObt"+index).val().trim()};
+	         JSONArray.push(jsonObject);
+	         if(index!=1)
+	         {
+	        	 for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+	    	 {    
+	        	
+	        	 var innerJson={"subject":$("#sub"+subjectIndex+index).val().trim(),"totMarks":$("#tot_mks"+subjectIndex+index).val().trim(),"obtMarks":$("#obt_mks"+subjectIndex+index).val().trim()
+		    			 ,"perMarks":$("#per_mks"+subjectIndex+index).val().trim()};
+	    		 JSONArray.push(innerJson);
+	    		
+	    	 }
+	        }
+	         finalJSONArray.push(JSONArray); 
+	       }
+	      }else{
+	    	var JsonArraySem=[];
+     		 if($("#elibty").val()=='10+')
+	        	{
+     			 
+     			 for(var index=1; index<=countOfAcademicList; index++)
+ 			     {   
+     			  var JSONArray = [];
+     			   if(index!=2){
+    		    	 var jsonObject={"qualification":$("#qualification"+index).val().trim(),"board":$("#board"+index).val().trim(),"passingYear":$("#passing_year"+index).val().trim(),"school":$("#school"+index).val().trim(),"quliPer":$("#quliPer"+index).val().trim(),"quliTotal":$("#quliTotal"+index).val().trim(),"quliObt":$("#quliObt"+index).val().trim()};
+    		         JSONArray.push(jsonObject);
+     		 
+	            if(index!=1)
+	            {
+		         for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+		    	 {
+		        	 var innerJson={"subject":$("#sub"+subjectIndex+index).val().trim(),"totMarks":$("#tot_mks"+subjectIndex+index).val().trim(),"obtMarks":$("#obt_mks"+subjectIndex+index).val().trim()
+			    			 ,"perMarks":$("#per_mks"+subjectIndex+index).val().trim()};
+		    		 JSONArray.push(innerJson);
+		    	 }   
+		     }
+	            finalJSONArray.push(JSONArray); 
+		    }
+     			
+ 	         }	
+     			var jsonSemObject={"qualification":$("#semQuali").val().trim(),"board":$("#semSpecial").val().trim(),"passingYear":$("#sem_passing_year").val().trim(),"quliPer":$("#semPer").val().trim(),"quliTotal":$("#semTotal").val().trim(),"quliObt":$("#semObt").val().trim()};
+     			JsonArraySem.push(jsonSemObject);
+     			 for(var index=1; index<=6; index++) 
+     			 {
+     				 var innerSemJson={"subject":$("#sem"+index).val().trim(),"totMarks":$("#maxMarks"+index).val().trim(),"obtMarks":$("#obtMarks"+index).val().trim()
+    		    			 ,"perMarks":$("#percentage"+index).val().trim()};
+     				JsonArraySem.push(innerSemJson);
+     			 }
+     			finalJSONArray.push(JsonArraySem);
+		     }
+     		 else if($("#elibty").val()=='12+'){
+     			for(var index=1; index<=countOfAcademicList; index++)
+    	        {   
+    	    	 var JSONArray = [];
+    	    	 var jsonObject={"qualification":$("#qualification"+index).val().trim(),"board":$("#board"+index).val().trim(),"passingYear":$("#passing_year"+index).val().trim(),"school":$("#school"+index).val().trim(),"quliPer":$("#quliPer"+index).val().trim(),"quliTotal":$("#quliTotal"+index).val().trim(),"quliObt":$("#quliObt"+index).val().trim()};
+    	         JSONArray.push(jsonObject);
+    	         if(index!=1)
+    	         {
+    	        	 for(var subjectIndex=1; subjectIndex<=3; subjectIndex++)
+    	    	 {    
+    	        	
+    	        	 var innerJson={"subject":$("#sub"+subjectIndex+index).val().trim(),"totMarks":$("#tot_mks"+subjectIndex+index).val().trim(),"obtMarks":$("#obt_mks"+subjectIndex+index).val().trim()
+    		    			 ,"perMarks":$("#per_mks"+subjectIndex+index).val().trim()};
+    	    		 JSONArray.push(innerJson);
+    	    		
+    	    	 }
+    	        }
+    	         finalJSONArray.push(JSONArray); 
+    	       }	
+     			var jsonSemObject={"qualification":$("#semQuali").val().trim(),"board":$("#semSpecial").val().trim(),"passingYear":$("#sem_passing_year").val().trim(),"quliPer":$("#semPer").val().trim(),"quliTotal":$("#semTotal").val().trim(),"quliObt":$("#semObt").val().trim()};
+     			JsonArraySem.push(jsonSemObject);
+     			 for(var index=1; index<=5; index++) 
+     			 {
+     				 if($("#maxMarks"+index).val().trim()!='' && $("#obtMarks"+index).val().trim()!=''){
+     				 var innerSemJson={"subject":$("#sem"+index).val().trim(),"totMarks":$("#maxMarks"+index).val().trim(),"obtMarks":$("#obtMarks"+index).val().trim()
+    		    			 ,"perMarks":$("#percentage"+index).val().trim()};
+     				  JsonArraySem.push(innerSemJson);
+     				 }
+     			 }
+     			finalJSONArray.push(JsonArraySem);
+     			
+     		 } 	  
+	      }
+	    
+	   
+	     
+	    var entranceArray=[];
+	     for(var entranceIndex=0; entranceIndex<finalArr.length; entranceIndex++)
+    	 {    
+	    	
+	    	 var ent_mast_id=$("#ent_mast_id").val();
+	    	 if(ent_mast_id=='')
+	    		 ent_mast_id=0; 
+	    	 var ent_det_id=$("#ent_det_id"+$("#ent"+finalArr[entranceIndex]).val()).val();
+	    	 if(ent_det_id=='')
+	    		 ent_det_id=0; 
+    	     var innerJson={"entranceName":$("#ent"+finalArr[entranceIndex]).val().trim(),"rank":$("#rank"+finalArr[entranceIndex]).val().trim(),"score":$("#score"+finalArr[entranceIndex]).val().trim(),"rollNo":$("#rollNo"+finalArr[entranceIndex]).val().trim(),"ent_mast_id":ent_mast_id,"ent_det_id":ent_det_id,"sessionId":$("#year"+finalArr[entranceIndex]).val().trim(),"index":finalArr[entranceIndex]};
+    	     entranceArray.push(innerJson);
+    	 }
+	     var jsonObject;
+	    if($("#flag").val()=='PG')
+	     {
+	    	if(parseInt($("#passing_year").val())<=parseInt($("#passing_year2").val()))
+	    	{
+	    		   $("#passing_year").focus();    
+		      	   showerr($("#passing_year")[0], "Graduation/Diploma passing year should be greater than academic passing year!","block"); 
+		      	   return false;
+	    	}
+	            jsonObject={"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"academicDetail":finalJSONArray,"entranceDetail":entranceArray,"adFlag":$("#adflag").val(),"rollNo":$("#roll").val(),"subject":$("#stream").val(),"university_id":$("#uni").val(),
+			   "passingYear":$("#passing_year").val().trim(),"criteria":$("#criteria").val(),"totMarks":$("#tot_mks").val().trim(),"obtMarks":$("#obt_mks").val().trim(),"perMarks":$("#per_mks").val().trim(),"cgpa":$("#cgpa").val().trim(),"mf":$("#mf").val().trim(),"ugDetail":finalUgJSONArray};
+	     }
+	    else if($("#flag").val()=='LE-PG')
+	       {
+ 			      var jsonUgArray = [];
+		    	  var jsonObject={"qualification":$("#ugQuali").val().trim(),"subject":$("#ugSpec").val().trim(),"quliPer":$("#ugPer").val().trim()};
+		    	  jsonUgArray.push(jsonObject);
+		    	  for(var index=1; index<=4; index++)
+				     {   
+		    		    if($("#ugMaxMarks"+index).val().trim()!='' && $("#ugObtMarks"+index).val().trim()!='')
+		    		   {
+		    		    	var innerUgJson={"subject":$("#ugSubject"+index).val().trim(),"totMarks":$("#ugMaxMarks"+index).val().trim(),"obtMarks":$("#ugObtMarks"+index).val().trim()
+	    		    			 ,"perMarks":$("#ugPercentage"+index).val().trim()};
+		    		        jsonUgArray.push(innerUgJson);
+		    		   }
+				     }
+		    	  finalUgJSONArray.push(jsonUgArray); 
+		    	  jsonObject={"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"academicDetail":finalJSONArray,"entranceDetail":entranceArray,"adFlag":$("#adflag").val(),"ugDetail":finalUgJSONArray};
+	     }
+	    else{
+	    	       jsonObject={"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"academicDetail":finalJSONArray,"entranceDetail":entranceArray,"adFlag":$("#adflag").val(),"ugDetail":finalUgJSONArray}; 
+	        }
+	    
+	    if($("#academicTerm").prop("checked")==true) { 
+	    
+			 $.ajax({
+		          type: "POST",
+				  url: "../userRegistration/saveUserAcademicInfo.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        	  if(data.flag==true){
+		        		  $("#adflag").val("true");
+		        		  $("#saveAcademicDetail").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>');
+		        		 
+		        	  }
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg1", data.status,""); // function to display success message and it's appearance time 
+						}, 100);
+		        	  clearSuccessMessageAfterTenSecond("errMsg1");
+		          }},
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+	    }else{
+	    	 setTimeout(function () {		
+					displaySuccessMessages("errMsg1", "Please Mark Eligibility Check Box",""); // function to display success message and it's appearance time 
+				}, 100);
+   	      clearSuccessMessageAfterTenSecond("errMsg1");
+	    }
+	
+}catch(err){
+		alert(err);
+	}
+});
+
+/*$('#saveOtherDetail').click(function(){ 			  This function is used save student personal detail      
+	
+	try{ 
+	    
+	  var jsonObject="";
+	  var pd="";
+	  var sportMedal="";
+	  var sportAge="";
+	  var defCategory="";
+	  var defMedal="";
+	  var tac="";
+	  var para_military="";
+	 
+	  if($("#domi_state").val()=='')
+		 {
+			  $('#domi_state').focus();    
+			  showerr($("#domi_state")[0], "Domicile State is required!","block"); 
+			  return false;
+		 } 
+	  if($("#religion").val()=='')
+		 {
+			  $('#religion').focus();    
+			  showerr($("#religion")[0], "Religion is required!","block"); 
+			  return false;
+		 } 
+	  
+	  if($("input[name='physically-disable']:checked").val()=='Y'){
+		  if($("#physically").val()=='')
+		 {
+			  $('#physically').focus();    
+			  showerr($("#physically")[0], "Physically Disable Category is required!","block"); 
+			  return false;
+		 } 
+		  pd=$("#physically").val();
+	  }
+	
+	  if($("input[name='sports-persons']:checked").val()=='Y'){
+		  if($("#sportMedal").val()=='')
+		  {
+			  $('#sportMedal').focus();    
+			  showerr($("#sportMedal")[0], "Medal name is required!","block"); 
+			  return false;
+		  }
+		  else if($("#sport_age").val()==''){
+			  $('#sport_age').focus();    
+			  showerr($("#sport_age")[0], "Age group is required!","block"); 
+			  return false; 
+		  }
+		  sportMedal =$("#sportMedal").val(); 
+		  sportAge=$("#sport_age").val(); 
+	  }
+	  if($("input[name='defence_personnel']:checked").val()=='Y'){
+		  
+		  if($("#defence_cate").val()=='')
+		  {
+			  $('#defence_cate').focus();    
+			  showerr($("#defence_cate")[0], "Defence Personnel Category is required!","block"); 
+			  return false;
+		  }
+		  else if($("#defance_medal").val()==''){
+			  $('#defance_medal').focus();    
+			  showerr($("#defance_medal")[0], "Medal name is required!","block"); 
+			  return false; 
+		  }
+		  defCategory =$("#defence_cate").val(); 
+		  defMedal=$("#defance_medal").val(); 
+	  }
+	  if($("input[name='ta']:checked").val()=='Y'){
+		 
+		  if($("#tac").val()==''){
+			  $('#tac').focus();    
+			  showerr($("#tac")[0], "Riots/Terrorist Affected Category is required!","block"); 
+			  return false;
+		  }
+		  tac =$("#tac").val();  
+	  }
+	  if($("input[name='para-military']:checked").val()=='Y'){
+		  if($("#military").val()==''){
+			  $('#military').focus();    
+			  showerr($("#military")[0], "Para Military Category is required!","block"); 
+			  return false;
+		  }
+		  para_military =$("#military").val();  
+	  }
+	  
+		  jsonObject={"pre_councelling_id":$("#councellingId").val(),"domi_state":$("#domi_state").val(),"originalCertificate":$("input[name='original']:checked").val(),
+				 "religion":$("#religion").val(),"nri":$("input[name='nri']:checked").val(),"physicallyDisable":pd,"singleChildgirl":$("input[name='single_childgirl']:checked").val(),
+				 "belongs":$("input[name='belongs']:checked").val(),"backwardClass":$("input[name='backward-class']:checked").val(),
+				  "sportMedal":sportMedal,"sportAge":sportAge,"defCategory":defCategory,"defMedal":defMedal,"tac":tac,"paraMilitary":para_military,"odFlag":$("#odFlag").val()};
+	 
+		      $.ajax({
+		          type: "POST",
+				  url: "../userRegistration/saveUserOtherDetail.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        		  if(data.flag==true){
+			        		  $("#odFlag").val("true");
+			        		  $("#saveOtherDetail").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>');
+			        	  }
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg2", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg2");
+		             }},
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+	
+}catch(err){
+		alert(err);
+	}
+});
+*/
+$('#saveOtherDetail').click(function(){ 			 /* This function is used save student personal detail */     
+	
+	try{ 
+	    
+	  var jsonObject="";
+	  var pd="";
+	  var sportMedal="";
+	  var sportAge="";
+	  var defCategory="";
+	  var defMedal="";
+	  var tac="";
+	  var para_military="";
+	
+	  var reservationCat=$('#categoty option:selected').text();
+	  var lastChar = reservationCat[reservationCat.length -1];
+	  if($("#domi_state").val()=='')
+		 {
+			  $('#domi_state').focus();    
+			  showerr($("#domi_state")[0], "Domicile State is required!","block"); 
+			  return false;
+		 } 
+	  else if($("#religion").val()=='')
+		 {
+			  $('#religion').focus();    
+			  showerr($("#religion")[0], "Religion is required!","block"); 
+			  return false;
+		 } 
+	  else if($('#nationality').val()=='')
+	  {
+		 $('#nationality').focus();    
+		 showerr($("#nationality")[0], "Nationality is required!","block"); 
+	     return false;
+	  }
+	  else if($('#ai').val()=='')
+	  {
+		 $('#ai').focus();    
+		 showerr($("#ai")[0], "Annual Income is required!","block"); 
+	     return false;
+	  }
+	  else if($('#sCategory').val()=='')
+	  {
+		 $('#sCategory').focus();    
+		 showerr($("#sCategory")[0], "Caste Category is required!","block"); 
+	     return false;
+	  }
+	  else if($('#categoty').val()=='')
+	  {
+		 $('#categoty').focus();    
+		 showerr($("#categoty")[0], "Reservation Category is required!","block"); 
+	     return false;
+	  }
+	 /* else if(lastChar=='C' && $('#sCategory').val()!=$('#categoty').val())
+	  {
+			 $('#categoty').focus();    
+			 showerr($("#categoty")[0], "Caste Category and Reservation Category should be same if Reservation is based on Caste Category!","block"); 
+		     return false;
+	  }*/
+	    
+	 /* else if($("#categoty").val()==''){
+		  $('#categoty').focus();    
+		  showerr($("#categoty")[0], "Category is required!","block"); 
+		  return false;
+		  for(var index=0; index<index1; index++)
+  	     {   
+	        	
+	         var jsonObject1={"cateId":$("#categoty"+odSaveIndex[index]).val(),"subCateId":$("#sub_cat"+odSaveIndex[index]).val(),"speCateId":$("#special_cat"+odSaveIndex[index]).val()};
+  	         finalJSONArray.push(jsonObject1); 
+  	     }
+	  }*/else{  
+		  /*var jsonObject={"pre_councelling_id":$("#councellingId").val(),"domi_state":$("#domi_state").val(),"originalCertificate":$("input[name='original']:checked").val(),
+				 "religion":$("#religion").val(),"odFlag":$("#odFlag").val(),"annualIncome":$("#ai").val(),"tuitionFee":$("input[name='tuition-fee']:checked").val(),"nationality":$("#nationality").val(),
+				  "cateId":$("#categoty").val(),"subCateId":$("#sub_cat").val(),"speCateId":$("#special_cat").val(),"sCategory":$('#sCategory').val()};*/
+		  var jsonObject={"pre_councelling_id":$("#councellingId").val(),"domi_state":$("#domi_state").val(),"originalCertificate":$("input[name='original']:checked").val(),
+					 "religion":$("#religion").val(),"odFlag":$("#odFlag").val(),"annualIncome":$("#ai").val(),"tuitionFee":$("input[name='tuition-fee']:checked").val(),"nationality":$("#nationality").val(),
+					  "cateId":$("#categoty").val(),"sCategory":$('#sCategory').val()};
+		      $.ajax({
+		          type: "POST",
+				  url: "../userRegistration/saveUserOtherDetail.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        		  if(data.flag==true){
+			        		  $("#odFlag").val("true");
+			        		  $("#saveOtherDetail").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>');
+			        	  }
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg2", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg2");
+		             }},
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+	     }
+	
+}catch(err){
+		alert(err);
+	}
+});
+
+
+$('#savedDocDetail').click(function(){ 			 /* This function is used save student personal detail */     
+	
+	try{ 
+		 if($('#photoName').val()!='')
+	        {
+		  var photoSize  = parseInt(($("#photoName")[0].files[0].size / 1024));
+	        }
+		 if($('#singName').val()!='')
+	        {
+		  var signSize  = parseInt(($("#singName")[0].files[0].size / 1024));
+	        }
+		 if($('#aadharName').val()!='')
+	        {
+		  var addharSize  = parseInt(($("#aadharName")[0].files[0].size / 1024));
+	        }
+		/* if($('#marksheetName').val()!='')
+	        {
+		  var markSize  = parseInt(($("#marksheetName")[0].files[0].size / 1024));
+	        }*/
+		 
+		 if($('#photoName').val()=='')
+        {
+	    	 $('#photoName').focus();
+	    	 showerr($("#photoName")[0], "<b>Photo is required!</b>","block");
+			    return false;
+        }
+		 else if(!(isJpg($('#photoName').val()) || isJpeg($('#photoName').val()))){
+
+	    	 $('#photoName').focus();
+	    	 showerr($("#photoName")[0], "<b>Please browse a JPG/JPEG file to upload</b>","block");
+			 return false;
+		 } 
+		 else if(photoSize>125){
+
+	    	 $('#photoName').focus();
+	    	 showerr($("#photoName")[0], "<b>File size should be less than 125KB!</b>","block");
+			 return false;
+		 } 
+		 
+		else if($('#singName').val()=='')
+        {
+	    	 $('#singName').focus();
+	    	 showerr($("#singName")[0], "<b>Signature is required!</b>","block");
+			 return false;
+        }
+		else if(!(isJpg($('#singName').val()) || isJpeg($('#singName').val())))
+        {
+	    	 $('#singName').focus();
+	    	 showerr($("#singName")[0], "<b>Signature must be .JPG,JPEG!</b>","block");
+			    return false;
+        }
+		 else if(signSize>125){
+
+	    	 $('#singName').focus();
+	    	 showerr($("#singName")[0], "<b>File size should be less than 125KB!</b>","block");
+			 return false;
+		 } 
+		 
+		/*else if($('#aadharName').val()=='')
+        {
+	    	 $('#aadharName').focus();
+	    	 showerr($("#aadharName")[0], "Aadhaar is required!","block");
+			 return false;
+        }*/
+		else if($('#aadharName').val()!='' && addharSize>125){
+
+	    	 $('#aadharName').focus();
+	    	 showerr($("#aadharName")[0], "<b>File size should be less than 125KB!</b>","block");
+			 return false;
+		 } 
+		/*else if($('#marksheetName').val()=='')
+        {
+	    	 $('#marksheetName').focus();
+	    	 showerr($("#marksheetName")[0], "Mark Sheet is required!","block");
+			 return false;
+       }
+		else if(markSize>100){
+
+	    	 $('#marksheetName').focus();
+	    	 showerr($("#marksheetName")[0], "File size should be less than 100KB!","block");
+			 return false;
+		 } */
+		 
+		else{
+	     var form = $('#docDetail')[0];
+	     var formData = new FormData(form);
+			 $.ajax({
+				 type: "POST",
+				 url: "../userRegistration/uploadMultipleFile.html",
+			     data: formData,
+			     cache : false,
+			     async: false,
+			     enctype: 'multipart/form-data',
+			     contentType : false,
+			     processData : false,
+			     success: function (data) {
+			    	 if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        		  if(data.flag==true){
+			        		  $("#ddFlag").val("true");
+			        		  $("#savedDocDetail").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>');
+			        	  }
+			    	 setTimeout(function () {		
+			    		 
+							displaySuccessMessages("errMsg5", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg5");
+			        }},
+			        error: function (data) {
+			            alert("Error");
+			        }
+			 
+		      });
+		}
+	
+}catch(err){
+		alert(err);
+	}
+});
+
+
+$('#saveChoice').click(function(){ 			 /* This function is used save student personal detail */     
+	
+	try{
+	      //parseInt($("#index").val());
+	     var JSONQury = {};
+	     var finalJSONArray = [];
+	     var finalArr = [];
+	     var preArray=[];
+	     var uniArray=[];
+	     var pgmArray=[];
+	     var clgArray=[];
+	     var courseTypeArray=[];
+	
+	        for(var index=1; index<=parseInt($("#index").val()); index++)
+		     {   
+	        
+	           if($("#uni"+index).val()=='')
+	      	   {
+	      		 $("#uni"+index).focus();    
+	      		 showerr($("#uni"+index)[0], "University is required!","block"); 
+	      	     return false;
+	      	   }
+	           else if($("#clg"+index).val()==''){
+	        	   $("#clg"+index).focus();    
+		      		showerr($("#clg"+index)[0], "College is required!","block"); 
+		      	    return false;
+	           }
+	           /*else if($("#course_type"+index).val()==''){
+	  	    	 $("#course_type"+index).focus();    
+	        		 showerr($("#course_type"+index)[0], "Course type is required!","block"); 
+	        	     return false;
+	  	       }*/
+	           else if($("#pgm"+index).val()==''){
+	        	   $("#pgm"+index).focus();    
+		      		showerr($("#pgm"+index)[0], "Programme is required!","block"); 
+		      	    return false;
+	           }
+	           else if($("#pre"+index).val()==''){
+	        	   $("#pre"+index).focus();    
+		      		showerr($("#pre"+index)[0], "Preference is required!","block"); 
+		      	    return false;
+	           }
+	           else{
+	        	  var element=$("#pre"+index).val(); 
+	        	
+	        	  
+	        	   if(preArray.includes(element))
+	        		   {
+	        		     $("#pre"+index).focus();    
+			      		 showerr($("#pre"+index)[0], "Preference must be unique!","block"); 
+			      		 $("#pre"+index).val("");
+			      		 return false;
+	        		   }
+	        	  
+	        	   preArray.push(element);
+	           }
+	           
+	           }
+	           
+	     /*}*/
+	        for(var index=1; index<=parseInt($("#index").val()); index++)
+     	     {   
+	        	
+	        	 //var jsonObject={"university_id":$("#uni"+index).val(),"degreeId":$("#pgm"+index).val(),"college_id":$("#clg"+index).val(),"preference":$("#pre"+index).val(),"course_type":$("#course_type"+index).val()};
+	        	 var jsonObject={"university_id":$("#uni"+index).val(),"degreeId":$("#pgm"+index).val(),"college_id":$("#clg"+index).val(),"preference":$("#pre"+index).val(),"course_type":$("#course_type").val()};
+     	         finalJSONArray.push(jsonObject); 
+     	     }
+	        var pc_choice_mast_id=$("#pc_choice_mast_id").val();
+	        if(pc_choice_mast_id=='')
+	        pc_choice_mast_id=0;
+	        
+	     /*var jsonObject={"pc_choice_mast_id":pc_choice_mast_id,"cdFlag":$("#cdFlag").val(),"course_type":$("#course_type").val(),"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"choiceDetail":finalJSONArray}; removed course type from choice tab and put into grid*/
+	      
+
+	      if($("#term").prop("checked")==true) { 
+	      var jsonObject={"pc_choice_mast_id":pc_choice_mast_id,"cdFlag":$("#cdFlag").val(),"applicationNo":$("#appNo").val(),"pre_councelling_id":$("#councellingId").val(),"choiceDetail":finalJSONArray,"term":$("#term:checked").val(),"cdDFlag":$("#cdDFlag").val(),"round":$("#round").val(),"applyNextRound":$("#applyNextRound").val()};
+	      $.ajax({
+		          type: "POST",
+				  url: "../userRegistration/saveUserChoiceInfo.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }else{
+		        	  if(data.flag==true){
+		        		  $("#cdFlag").val("true");
+		        		  $("#cdDFlag").val("true");
+		        		  $("#saveChoice").html('<b>Update</b><i class="fa fa-send hidden-xs" style="padding: 4px;"></i>');
+		        	  }
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg6", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg6");
+		             }},
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+	      }else{
+	    	  setTimeout(function () {		
+					displaySuccessMessages("errMsg6", "Please mark Rule and Regulation of MRSPTU",""); // function to display success message and it's appearance time 
+				}, 1000);
+      	      clearSuccessMessageAfterTenSecond("errMsg6");
+	      }
+	
+}catch(err){
+		alert(err);
+	}
+});
+
+$('#btnOtp').click(function(){    /* -- call on send otp button -- */ 
+	     
+try{
+	
+	 if($('#mobile').val()=='')
+	  {
+		 $('#mobile').focus();    
+		 showerr1($("#mobile")[0], "Mobile No. is required!","block"); 
+	     return false;
+	  }
+	 else{
+		var webServiceUrl=$("#webServiceUrl").val();
+		
+		var mobile=$("#mobile").val();
+		clearSuccessMessageAfterTenSecond("errMsg");
+		$.ajax({ 
+			type: "POST",
+			url:webServiceUrl+'getOtp',
+			dataType: 'json',
+			async: false,
+			success: function (response)  // when data returns through controller
+			{
+                if (typeof response.otp != 'undefined' && response.otp.length > 0)
+                {         
+                	var otp=response.otp;
+                	saveOtp(otp,mobile)
+                }else{
+               
+                }
+			}  
+		});
+	 }
+	}catch(err){
+		alert(err);
+	}
+
+});	
+
+
+$("#OTP").blur(function(){
+	 
+	try{      
+	      if($("#OTP").val()!=''){
+	      var jsonObject={"mobile":$("#mobile").val(),"otp":$("#OTP").val()};
+	      $.ajax({
+	          type: "POST",
+			  url: "userRegistration/validdateOtp.html",
+			  contentType: 'application/json',
+			  data:JSON.stringify(jsonObject),
+			  dataType: 'json',
+			  async: false,
+	          success: function (data) {
+	        	  if(data.status=='3')
+	        	  $("#btnRegister").show();
+	        	  else if(data.status=='2')
+	        	  	{
+	        		  $("#btnRegister").hide();
+	        		  showerr1($("#OTP")[0], "Please enter correct Otp!","block");
+	        	  	}  
+	        	  else if(data.status=='1'){
+	        		  $("#btnRegister").hide();
+	        		  showerr1($("#OTP")[0], "Please resent otp has been expired!","block");
+	        	  }
+	             },
+	          error: function (data) {
+	              alert("Error");
+	          }
+	      });
+	     }
+	
+}catch(err){
+	alert(err);
+}
+	
+	});
+
+
+$('#ai').change(function() {
+	var jsonObject={"annualIncome":$("#ai").val()};
+    $.ajax({
+        type: "POST",
+		  url: "../userRegistration/validdateAnnualIncome.html",
+		  contentType: 'application/json',
+		  data:JSON.stringify(jsonObject),
+		  dataType: 'json',
+		  async: false,
+          success: function (data) {
+      	  if(data.status==true)
+      	   $("#tf").show();
+      	  else 
+          $("#tf").hide();
+      
+           },
+        error: function (data) {
+            alert("Error");
+        }
+    });
+	
+	});
+
+
+
+
+/*$('#riots_no').change(function() {
+	  $('#tac').prop('disabled', true);
+	});
+	$('#riots_yes').change(function() {
+	  $('#tac').prop('disabled', false);
+	});
+	$('#military_no').change(function() {
+	  $('#military').prop('disabled', true);
+	});
+	$('#military_yes').change(function() {
+	  $('#military').prop('disabled', false);
+	});
+	$('#sports_no').change(function() {
+	  $('#sportMedal').prop('disabled', true);
+	  $('#sport_age').prop('disabled', true);
+	});
+	$('#sports_yes').change(function() {
+	  $('#sportMedal').prop('disabled', false);
+	  $('#sport_age').prop('disabled', false);
+	});
+
+	$('#defence_no').change(function() {
+	  $('#defence_cate').prop('disabled', true);
+	  $('#defance_medal').prop('disabled', true);
+	  
+	});
+	$('#defence_yes').change(function() {
+	  $('#defence_cate').prop('disabled', false);
+	  $('#defance_medal').prop('disabled', false);
+	});
+	$('#physically_no').change(function() {
+	  $('#physically').prop('disabled', true);
+	});
+	$('#physically_yes').change(function() {
+	  $('#physically').prop('disabled', false);
+	});*/
+	
+	$('#domi_state').change(function() {
+		getCategory($("#domi_state").val(),'categoty','../common/');
+		
+	});
+	
+
+      $('#course_typ').change(function() {
+    	  if($("#course_typ").val()!=' ')
+    	   var pageType= $("#pageType").val(); 
+		   if(pageType=='inner')
+    	   getProgrammeData('dropDown','../common/');
+		   else
+		   getProgrammeData('dropDown','common/');
+		});
+	
+	
+	
+	 /* This function is used to add new row as dynamic on click of add button inside choice detail tab. */     
+	
+	 $("#addRow").click(function(){
+			
+			
+		 var uniDrop="";
+		 var programmeType="";
+		 var webUrl='../common/';
+		    
+		/* $.ajax({ 
+				type: "POST",
+				url:webUrl+'getUniversity.html',
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {         
+		                uniDrop += "<option value=''>Select University</option>"; 
+		             	$.each(response.data, function (key, val) {
+		                     var widgetKey = val.id;
+		                     var widgetValue = val.value;
+		                     uniDrop += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+		                  });
+		                 
+		             }else{
+		            	 uniDrop += "<option value=''>Select University</option>";
+		             }
+	            }
+		 });*/
+		 
+		/* $.ajax({ 
+				type: "POST",
+				url:webUrl+'getCourseType.html?pgmType='+$("#pgmType").val(),
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {         
+						 programmeType += "<option value=''>Select Course type </option>"; 
+		             	$.each(response.data, function (key, val) {
+		                     var widgetKey = val.id;
+		                     var widgetValue = val.value;
+		                     programmeType += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+		                  });
+		                 
+		             }else{
+		            	 programmeType += "<option value=''>Select Course type</option>";
+		             }
+	            }
+		 });*/
+		
+		      uniDrop += "<option value='" + $("#uni1").val() + "' >" +$("#uni1 option:selected").text()+ "</option>"
+		         
+			    index=parseInt($('#index').val())+1;
+			    var clgId="clg"+index;
+			    var pgmId="pgm"+index;
+			    /*uniDrop='<select class="form-control" '
+					+' id="uni'+index+'" name="uni'+index+'" onchange=getCollege(this,"'+clgId+'");>' +uniDrop+'</select>';*/
+			    uniDrop='<select class="form-control" '
+					+' id="uni'+index+'" name="uni'+index+'">' +uniDrop+'</select>';
+			    
+			    /*$('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+		           +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange="changeValues('+index+');">'
+				   +'<option value="">Select College</option></select></td><td class="text-center"><select class="form-control" id="course_type'+index+'" name="course_type'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'",this.value,"'+pgmId+'","'+index+'","");>'
+				   +programmeType+'</select></td>'
+                +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+				   +'<option value="">Select Programme</option></select></td>'
+				   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+				   +'<td class="text-center"><a href="#" class="chnageonhover" id="view" onclick="showPopup('+index+')">View</a></td><td class="text-center"><a href="#" class="view chnageonhover'
+				   +' id="add'+index+'+" onclick="addValues('+index+')">Add</a></td><td class="text-center" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+				   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');
+			       $("#index").val(index);*/
+			 /* 
+			    $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+			            +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange="changeValues('+index+');">'
+			    		   +'<option value="">Select College</option></select></td><td class="text-center"><select class="form-control" id="course_type'+index+'" name="course_type'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'",this.value,"'+pgmId+'","'+index+'","");>'
+			    		   +programmeType+'</select></td>'
+			            +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+			    		   +'<option value="">Select Programme</option></select></td>'
+			    		   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+			    		   +'<td class="text-center aaa" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+			    		   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>'); use this code when use course type on choice detail */
+			    
+			   var college = ""; 
+			    $("#clg1 option").each(function()
+			    		{
+			    	       college += "<option value='" + $(this).val() + "' >" + $(this).text() + "</option>";	  
+			    		});
+			    
+			    var courseType=$("#course_type").val();
+			   /* $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+			            +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'","'+courseType+'","'+pgmId+'","'+index+'","");>'
+			    		   +'<option value="">Select College</option></select></td>'
+			               +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+			    		   +'<option value="">Select Programme</option></select></td>'
+			    		   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+			    		   +'<td class="text-center aaa" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+			    		   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');*/
+			    
+			    $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+			            +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'","'+courseType+'","'+pgmId+'","'+index+'","");>'
+			    		   +college+'</select></td>'
+			               +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+			    		   +'<option value="">Select Programme</option></select></td>'
+			    		   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+			    		   +'<td class="text-center aaa" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+			    		   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');
+			               $("#index").val(index);
+			    
+		});
+	
+	 $("#sumbitForm").click(function(){ //use to finally submit the student form
+		
+		 var webUrl='../userRegistration/';
+		  var flag=true;
+		    for(var index=1; index<=parseInt($("#index").val()); index++)
+		     {   
+	        
+	           if($("#uni"+index).val()=='')
+	      	   {
+	        	   flag= false;
+	        	   break;
+	      	   }
+	           else if($("#clg"+index).val()==''){
+	        	  
+	        	   flag= false;
+	        	   break;
+	           }
+	           else if($("#course_type"+index).val()==''){
+	        	   flag= false;
+	        	   break;
+	  	       }
+	           else if($("#pgm"+index).val()==''){
+	        	   
+	        	   flag= false;
+	        	   break;
+	           }
+	           else if($("#pre"+index).val()==''){
+	        	  
+	        	   flag= false;
+	        	   break;
+	           }
+	           
+	           }
+		 if(flag){
+		    if((($("#pdflag").val()=='true') && $("#adflag").val()=='true' && ($("#odFlag").val()=='true' && $("#ddFlag").val()=='true')) && $("#cdFlag").val()=='true')
+		    {
+			var status= confirm("Are you sure you want to submit form?");
+			if(status)
+			{
+				 var jsonObject={"applicationNo":$("#applicationNo").val(),"pre_councelling_id":$("#councellingId").val(),"formStatus":"Y"};
+				 $.ajax({ 
+						type: "POST",
+						url:webUrl+'submitForm.html',
+						dataType: 'json',
+					    data:JSON.stringify(jsonObject),
+						contentType: "application/json",
+						async: false,
+						success: function (response)  // when data returns through controller
+						{
+							  if(response.status==401){
+				        		  window.location ="../SessionExp.jsp";
+				        	  }else{
+							setTimeout(function () {		
+								displaySuccessMessages("errMsg6", response.status,""); // function to display success message and it's appearance time 
+							}, 1000);
+							 clearSuccessMessageAfterTenSecond("errMsg6");
+							 if (response.flag==true)
+				             {
+								 
+								    if($("#allotment").val()==true){
+								    var $activeTab = $('.tab-content .tab-pane.active')
+									var activeId = $activeTab.attr('id');
+									var $active = $('.nav-tabs li.active');
+					        	    $active.next().removeClass('disabled');
+					        		nextTab($active);
+								    }
+					        		/*var course      =$("#pgm1 option:selected").text();
+					        		var college     =$("#clg1 option:selected").text();
+					        		$("#senSecondMks").val($("#quliPer2").val());
+					        		$("#graducationMks").val($("#per_mks").val());
+					        	
+					        		var college=$("#clg1 option:selected").text();
+					        		var specialization=course.split("(")[1];
+					        		$("#result").html("<label>You are Selected For "+course+",Under "+specialization
+											+",Seat at "+ college+ ".</label> <label>You are "
+											+" requested to report at the respective Department/College"
+											+" and Pay the Corresponding Fee.</label>");*/
+					        		
+								 $("#btnSavePersonalDetail").attr("disabled",true); 
+								 $("#saveAcademicDetail").attr("disabled",true); 
+								 $("#saveOtherDetail").attr("disabled",true); 
+								 $("#savedDocDetail").attr("disabled",true); 
+								 $("#saveChoice").attr("disabled",true); 
+								 $("#sumbitForm").attr("disabled",true); 
+								 $("#addRow").attr("disabled",true); 
+								 $("#addRow1").attr("disabled",true); 
+								 $('[id=btnReset]').slice(1).prop("disabled", true);
+								 $('.aaa').css({pointerEvents: "none"})
+								 $(".clr-subheadnew").attr("disabled",true); 
+								 $("#personalInfo *").prop('disabled',true);
+								 $("#academicDetail *").prop('disabled',true);
+								 $("#otherDetailTab *").prop('disabled',true);
+								 $("#docDetail *").prop('disabled',true);
+								 $("#saveChoiceDetail *").prop('disabled',true);
+								 
+								 $("input, select, option, textarea", "#saveChoiceDetail").prop('disabled',true);
+								 $("input, select, option, textarea", "#academicDetail").prop('disabled',true);
+								 $("input, select, option, textarea", "#personalInfo").prop('disabled',true);
+								 $("input, select, option, textarea", "#otherDetailTab").prop('disabled',true);
+								 $("image, select, option, textarea", "#docDetail").prop('disabled',true);
+								
+								 
+				             }
+				        	}
+			            },
+				          error: function (data) {
+				              alert("Error");
+				          },
+				 }); 
+			}
+			else{
+				return false;
+			}
+		  }   else if($("#adflag").val()=='changeinEligibility'){
+			      alert("Please Confirmed records is saved on Academic Detail tab!");
+				
+			 } 
+			 	else{
+				 alert("Please Confirmed records is saved on all tabs!");
+		    } 
+		 }else{
+			 document.getElementById("errMsg6").innerHTML="<center><strong>Added Row should not be blank!</strong></center>";
+	    	  clearSuccessMessageAfterTenSecond("errMsg6");
+		 }
+	 });
+	 
+	 $("#changePassword").click(function(){ //use to change password
+		 var webUrl='../userRegistration/';
+		   if($('#opwd').val()=='')
+		  {
+			  $('#opwd').focus();   
+			  showerr1($("#opwd")[0], "Old Password is required!","block"); 
+		      return false;
+		  }
+		else if(parseInt($('#opwd').val().length)<8)
+		  {
+			  $('#opwd').focus();   
+			  showerr1($("#opwd")[0], "Old Password must be between 8 to 15!","block"); 
+		      return false;
+		  }	
+		else if(!checkContainOneCharOneNumberOneSpacialChar().test($('#opwd').val()))
+		  {
+			  $('#opwd').focus();   
+			  showerr1($("#opwd")[0], "Password contain at least one letter, one number and one special character!","block"); 
+		      return false;
+		  }
+		else if($('#npwd').val()=='')
+		  {
+			    showerr1($("#npwd")[0], "New password is required!","block"); 
+		        $('#npwd').focus();
+		        return false;
+		  }
+		else if(parseInt($('#npwd').val().length)<8)
+		  {
+			  $('#npwd').focus();   
+			  showerr1($("#npwd")[0], "New Password must be between 8 to 15!","block"); 
+		      return false;
+		  }	
+		else if(!checkContainOneCharOneNumberOneSpacialChar().test($('#npwd').val()))
+		  {
+			  $('#npwd').focus();   
+			  showerr1($("#npwd")[0], "New Password contain at least one letter, one number and one special character!","block"); 
+		      return false;
+		  }
+		else if($('#opwd').val()==$('#npwd').val())
+		  {
+			  $('#npwd').focus();   
+			  showerr1($("#npwd")[0], "New Password can't be same as old password!","block"); 
+		      return false;
+		  }	
+		else if($('#cnpwd').val()=='')
+		  {
+			    showerr1($("#cnpwd")[0], "Confirm password is required!","block"); 
+		        $('#cnpwd').focus();
+		        return false;
+		  }
+		else if($('#cnpwd').val()!=$('#npwd').val()){
+			    showerr1($("#cnpwd")[0], "Confirm password should be match!","block"); 
+		        $('#cnpwd').focus();
+		        return false;
+		}
+		 
+		else{
+				 var jsonObject={"oldPassword":$("#opwd").val(),"password":$("#npwd").val()};
+				 $.ajax({ 
+						type: "POST",
+						url:webUrl+'changePassword.html',
+						dataType: 'json',
+					    data:JSON.stringify(jsonObject),
+						contentType: "application/json",
+						async: false,
+						success: function (response)  // when data returns through controller
+						{
+							  if(response.status==401){
+				        		  window.location ="../SessionExp.jsp";
+				        	  }  
+								 	
+								displaySuccessMessages("errMsgChangePass", response.status,""); // function to display success message and it's appearance time 
+								clearSuccessMessageAfterThreeSecond("errMsgChangePass");
+								  if(response.flag==true){
+									  setTimeout(function () {
+							      document.changeForm.action= "../userRegistration/redirectLoginPage.html";	   
+							      document.changeForm.submit(); 
+									  }, 3000);
+								  }
+							 
+			            },
+				          error: function (data) {
+				              alert("Error");
+				          },
+				 }); 
+			}
+	 });
+	 
+	
+	 
+	 $('#sState').change(function() {
+		  
+		 var state=$(this).val();
+		 var webUrl='../common/';
+		 getCityByState(webUrl,state,"sCity");
+		});
+	 
+	 
+	 $("#downLoadAllotment").click(function(){ //use to finally submit the student form
+			
+		 $("#course").val($("#pgm1 option:selected").text());
+		 $("#address").val($("#address").val());
+		 $("#sFatherName").val($("#sFatherName").val());
+		 $("#sFName").val($("#sFName").val());
+		 $("#allotNo").prop('disabled',true);
+    	 $("#collegeName").val($("#clg1 option:selected").text());
+		 $("#allotmentLetter").attr("action","../preadmission/AllotmentLetterReport.jsp");
+		 $("#allotmentLetter").attr("method","post");
+		 $("#allotmentLetter").submit();
+		 
+	 });
+	 $("#addRow1").click(function(){ //use to finally submit the student form
+			
+
+		 var status= confirm("Are you sure you want to add row?");
+			if(status)
+			{
+			
+		    var index1=parseInt($('#choiceForAdd').val());
+		    var index=(parseInt($('#index').val())+1);
+		    if($('#choiceForAdd').val().trim()!=''  && IsInteger($('#choiceForAdd').get(0),'Preference Number')){
+		  
+		    if(!(index1>parseInt($('#index').val())) && index1!=0){
+		    var webUrl='../common/';
+		    var clgId="clg"+index;
+		    var pgmId="pgm"+index;
+		    var programmeType="";
+		    var programmeType1="";
+		    var programme="";
+		    var uniDrop1="";
+		    var programmeData="";
+		    var	uniDrop="";
+		    var courseId=$("#courseId").val();
+			/* $.ajax({ 
+					type: "POST",
+					url:webUrl+'getUniversity.html',
+					dataType: 'json',
+					contentType: "application/json",
+					async: false,
+					success: function (response)  // when data returns through controller
+					{
+						 if (typeof response.data != 'undefined' && response.data.length > 0)
+			             {         
+							programme=response.data;
+							   uniDrop1 += "<option value=''>Select University</option>"; 
+				            	$.each(programme, function (key, val) {
+				                    var widgetKey = val.id;
+				                    var widgetValue = val.value;
+				                    uniDrop1 += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+				                 });
+			               
+			             }else{
+			            	 uniDrop1 += "<option value=''>Select University</option>";
+			             }
+		            }
+			 });*/
+			 
+			/* $.ajax({ 
+					type: "POST",
+					url:webUrl+'getCourseType.html?pgmType='+$("#pgmType").val(),
+					dataType: 'json',
+					contentType: "application/json",
+					async: false,
+					success: function (response)  // when data returns through controller
+					{
+						 if (typeof response.data != 'undefined' && response.data.length > 0)
+			             {       
+							 programmeData=response.data;
+							 programmeType1 += "<option value=''>Select Course type </option>"; 
+			             	 $.each(response.data, function (key, val) {
+			                     var widgetKey = val.id;
+			                     var widgetValue = val.value;
+			                     programmeType1 += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+			                  });
+			                 
+			             }else{
+			            	 programmeType1 += "<option value=''>Select Course type</option>";
+			             }
+		            }
+			 }); use when course type filed show on choice detail tab*/
+		  
+		    
+		    
+			/* var uniDrop='<select class="form-control" '
+					+' id="uni'+index+'" name="uni'+index+'" onchange=getCollege(this,"'+clgId+'");>' +uniDrop+'</select>';*/
+		    uniDrop += "<option value='" + $("#uni1").val() + "' >" +$("#uni1 option:selected").text()+ "</option>"
+		    
+		    var uniDrop='<select class="form-control" '
+				+' id="uni'+index+'" name="uni'+index+'" >' +uniDrop+'</select>';
+		    
+		    
+			  var courseType=$("#course_type").val();
+			 /* $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+				        +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange="changeValues('+index+');">'
+						   +'<option value="">Select College</option></select></td><td class="text-center"><select class="form-control" id="course_type'+index+'" name="course_type'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'",this.value,"'+pgmId+'","'+index+'","");>'
+						   +programmeType1+'</select></td>'
+				        +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+						   +'<option value="">Select Programme</option></select></td>'
+						   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+						   +'<td class="text-center aaa" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+						   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>'); use when course type filed show on choice detail tab*/
+			 
+			   var college = ""; 
+			    $("#clg1 option").each(function()
+			    		{
+			    	       college += "<option value='" + $(this).val() + "' >" + $(this).text() + "</option>";	  
+			    		});
+			 
+			 $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+				        +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'","'+courseType+'","'+pgmId+'","'+index+'","");>'
+						 /*  +'<option value="">Select College</option></select></td>'*/
+				           +college+'</select></td>'
+				           +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+						   +'<option value="">Select Programme</option></select></td>'
+						   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+						   +'<td class="text-center aaa" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+						   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');
+		       $("#index").val(index);
+		       for(var i=index; i>index1; i--)
+		       {
+		    	   var newIndex=i-1;
+		    	   var clg="clg"+i;
+		    	   var pgm="pgm"+i;
+		    	  /*  uniDrop += "<option value=''>Select University</option>"; 
+	            	$.each(programme, function (key, val) {
+	                    var widgetKey = val.id;
+	                    var widgetValue = val.value;
+	                    if($("#uni"+newIndex).val()==widgetKey)
+	                    uniDrop += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+	                    else
+	                    uniDrop += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+	                 });
+	            	
+	            	 var uniDrop='<select class="form-control" '
+	     				+' id="uni'+i+'" name="uni'+i+'" onchange=getCollege(this,"'+clg+'");>' +uniDrop+'</select>';*/
+	            	
+	            	/* programmeType += "<option value=''>Select Course type </option>"; 
+	             	 $.each(programmeData, function (key, val) {
+	                     var widgetKey = val.id;
+	                     var widgetValue = val.value;
+	                     if($("#course_type"+newIndex).val()==widgetKey)
+	                     programmeType += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+	                     else
+	                     programmeType += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+	                  });  */
+	               
+		    	   $("#uni"+i).html(uniDrop);
+		    	   $("#clg"+i).html(getCollegeByUniversity($("#uni"+newIndex).val(),clg,$("#clg"+newIndex).val(),courseId));
+		    	   //$("#course_type"+i).html(programmeType); use when course type drop down on choice detail
+		    	   //$("#pgm"+i).html(getDegreeByCollegeAndType(webUrl,$("#course_type"+newIndex).val(),pgm,newIndex,$("#pgm"+newIndex).val()));
+		    	   $("#pgm"+i).html(getDegreeByCollegeAndType(webUrl,courseType,pgm,newIndex,$("#pgm"+newIndex).val()));
+		    	 /*  uniDrop="";*/
+		    	  // programmeType="";  use when course type drop down on choice detail
+		       }
+
+		       var uniDrop1='<select class="form-control" '
+					+' id="uni'+index1+'" name="uni'+index1+'" onchange=getCollege(this,"'+clgId+'");>' +uniDrop1+'</select>';
+		      /* $("#uni"+index1).html(uniDrop1);*/
+		       $("#uni"+index1).html(uniDrop);
+	    	   /*$("#clg"+index1).html('<option value="">select College </option>');*/
+		       $("#clg"+index1).html(college);
+	    	 //  $("#course_type"+index1).html(programmeType1);
+	    	   $("#pgm"+index1).html('<option value="">select Programme</option>');
+	    	   $("#choiceForAdd").val(""); 
+		    }
+		    else{
+		    	
+		    	  document.getElementById("errMsg6").innerHTML="<center><strong>Please enter valid number!</strong></center>";
+		    	  clearSuccessMessageAfterTenSecond("errMsg6");
+				  return false;
+		    }
+		   }
+		    else{
+		    	  $('#txt_').html('');
+		    	  document.getElementById("errMsg6").innerHTML="<center><strong>Please enter number!</strong></center>";
+		    	  clearSuccessMessageAfterTenSecond("errMsg6");
+				  return false;
+		    }
+	    	   
+			}
+		 
+	 });
+	 
+	 $('#photoName').change(function() {
+		 readURL(this,'photo','ph');
+		});
+	 
+	 $('#singName').change(function() {
+		 readURL(this,'signature','sign');
+		});
+	 
+	 $('#aadharName').change(function() {
+		 readURL(this,'aadhaar','aadhar');
+		});
+	 
+	 /*$('#mrn').blur(function() {
+		        IsInteger(this,'Matriculation No.');
+				if($("#mrn").val()!=''){
+		        var jsonObject={"mrn":$("#mrn").val(),"applicationNo":$("#appNo").val()};
+			    $.ajax({
+			        type: "POST",
+					  url: "../userRegistration/checkDuplicateMrn.html",
+					  contentType: 'application/json',
+					  data:JSON.stringify(jsonObject),
+					  dataType: 'json',
+					  async: false,
+			          success: function (data) {
+			      	  if(data.status==true)
+			      	  {
+                          $('#mrn').focus();   
+						  showerr($("#mrn")[0], "Matriculation Roll No already saved please enter another!","block"); 
+						  return false;
+			      	  }
+			          },
+			        error: function (data) {
+			            alert("Error");
+			        }
+			    });
+				}
+					
+		});*/
+		
+	 $("#makepay").click(function(){
+	 $("#makePayment").attr("action","makePayment.html");
+	 $("#makePayment").attr("method","post");
+	 $("#makePayment").submit();
+	 });
+
+	 
+	 $("#logout").click(function (e) {
+		 $("#makePayment").attr("action","makePayment.html");
+		 $("#makePayment").attr("method","post");
+		 $("#makePayment").submit();
+	    }); 
+	 
+	
+	 // use to send password to user when he got forget
+	 
+	 $("#forgetPassword").click(function (e) {
+		
+		 
+		 if($("#appNo").val().trim()==''){
+			  $('#appNo').focus();   
+			  showerr1($("#appNo")[0], "Application No. is required!","block"); 
+		      return false;	 
+		 }else if($("#email1").val().trim()==''){
+			  $('#email1').focus();   
+			  showerr1($("#email1")[0], "Email is required!","block"); 
+		      return false;
+		 }else{
+			 
+	        var jsonObject={"applicationNo":$("#appNo").val().trim(),"email":$("#email1").val().trim()};
+		    $.ajax({
+		        type: "POST",
+				  url: "userRegistration/forgetPassword.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }  
+						displaySuccessMessages("errMsgChangePass", data.status,""); // function to display success message and it's appearance time 
+						clearSuccessMessageAfterTenSecond("errMsgChangePass");
+		          },
+		        error: function (data) {
+		            alert("Error");
+		        }
+		    });
+			
+		 }
+	    }); 
+	 
+	 $('.passingYear').change(function() {
+		    var id=$(this).attr('id');
+		    var value=$(this).val();
+			if(id=='passing_year1')
+		    {
+				var newValue=$("#passing_year2").val();
+				if(parseInt(newValue)>parseInt(value)){
+					$("#txt_passing_year2").html("");
+				}
+		     }
+			else 
+			  {
+				  
+				    if($("#flag").val()=='LE-UG' || $("#flag").val()=='LE-PG')
+			        {
+					   var newValue=parseInt($("#sem_passing_year").val());
+					   if(newValue>parseInt(value))
+						$("#txt_").html("");
+					}
+				    else if($("#flag").val()=='PG'){
+				    	$("#txt_passing_year").html("");
+				    }
+			  }
+	 }); 
+	 
+	/* $("#resetForget").click(function (e) {
+		 $("#appNo").val('');
+		 $("#email1").val('');
+	    }); */
+	 
+	 // call on click of are you accept alloted seat on result tab
+	 $('input[name$="allotedseat"]').click(function(){
+	        var inputValue = $(this).attr("value");
+	       
+	        if(inputValue=='N'){
+	        	 $("#downLoadAllotment").prop('disabled',true);
+	        	 $("#generatechallan").prop('disabled',false);
+	        }
+	        else
+	        	{
+	        	   $("#downLoadAllotment").prop("disabled",false);
+	        	}
+	       
+	    });
+	 
+ // use to send password to user when he got forget
+	 
+	 $("#withdraw,#surrender").click(function (e) {
+		
+		    var id= $(this).attr("id");
+		  
+		    if(id=='surrender')
+		   // var jsonObject={"applicationNo":$("#applicationNo").val().trim(),"round":$("#round1").val().trim(),"tac":id,"remarks":$("#remarks").val().trim()};
+		    	 var jsonObject={"applicationNo":$("#applicationNo").val().trim(),"tac":id,"remarks":$("#remarks").val().trim()};
+		    	else
+		    // var jsonObject={"applicationNo":$("#applicationNo").val().trim(),"round":$("#round1").val().trim(),"tac":id};
+		       var jsonObject={"applicationNo":$("#applicationNo").val().trim(),"tac":id};
+		    var flag= confirm("Are you sure ?");
+   		    if(flag)
+   		    {
+		    $.ajax({
+		        type: "POST",
+				  url: "../userRegistration/updateSeatMatrix.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }  
+		        	  if(data.flag=true){
+		        	  $("#withdraw").prop('disabled',true);
+		        	  if(id=='surrender'){
+		        	  $("#generatechallan").prop('disabled',true);
+		        	  window.location ="../loginUser.jsp";	 
+		        	  }
+		        	  else
+		        	  $("#generatechallan").prop('disabled',false);  
+		        	  $("#seatSurrender").prop('disabled',true);
+		        	  $("#downLoadAllotment").prop('disabled',true);
+		        	  }
+		        	  
+						displaySuccessMessages("errMsg7", data.status,""); // function to display success message and it's appearance time 
+						clearSuccessMessageAfterTenSecond("errMsg7");
+		          },
+		        error: function (data) {
+		            alert("Error");
+		        }
+		    });
+			
+   		 }
+	    }); 
+	 
+	 
+	 // call on 
+	 $('#courseId').change(function() {
+		 
+		 if($("#pageType").val()=='outer')
+		 getCourseType('common/',this.value);
+		 else
+	     getCourseType('../common/',this.value);
+		});
+	 
+	 
+	 // call on click of are you accept alloted seat on result tab
+	 $('#generatechallan').click(function(){
+	      
+		 var status= confirm("Do you want to apply for next round?");
+			if(status)
+			{
+			 var jsonObject={"applicationNo":$("#applicationNo").val().trim()};
+			 var flag= confirm("Your form is unlock for next councelling, so Login again and fill choice details on choice tab");
+    		 if(flag)
+    		{
+    			
+			    $.ajax({
+		        type: "POST",
+				  url: "../userRegistration/updateRound.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+				  async: false,
+		          success: function (data) {
+		        	  if(data.status==401){
+		        		  window.location ="../SessionExp.jsp";
+		        	  }  
+		        	  if(data.flag=true){
+		        		 window.location ="../loginUser.jsp";	 
+		        	  }
+		        	  
+		          },
+		        error: function (data) {
+		            alert("Error");
+		        }
+		    });  
+    		}
+			}
+			
+	    });
+	 
+}); /* End Document Ready Function */
+
+
+
+
+/*
+ * -----------------------------------------------------------
+ * function to to display success message and appearance time |
+ * -----------------------------------------------------------
+ */
+
+function displaySuccessMessages(divId, dispStrongMessage, dispMessage) {  
+	if (dispMessage == "" || dispMessage == null || dispMessage == undefined || dispMessage == "undefined") dispMessage = "";
+	$("#" + divId).text("").append('<div><center><strong>' + dispStrongMessage + '!</strong><center>' + dispMessage + '</div>');
+}
+
+function clearSuccessMessageAfterTenSecond(MsgDivID) {
+    setTimeout(function () {
+        $("#" + MsgDivID).text("");    	
+    }, 5000);
+ 
+ }
+
+
+function clearSuccessMessageAfterThreeSecond(MsgDivID) {
+    setTimeout(function () {
+        $("#" + MsgDivID).text("");    	
+    }, 3000);
+ 
+ }
+
+function reloadForm(){     		  /* -- This function is use to reload form. -- */ 
+	setTimeout(function(){ 		  /* -- Time out function. -- */
+		location.reload()},5000)  /* -- Location.reload function is use to reload form on same page. -- */ 
+}
+
+function calculatePercentage(tot,obt,per,id)
+{
+	if($("#"+tot+id).val()!='' && $("#"+obt+id).val()!=''){
+	var totMarks=parseInt($("#"+tot+id).val());
+	var obtMarks=parseInt($("#"+obt+id).val());
+	if(IsInteger($("#"+tot+id).get(0),'Total Marks') && IsInteger($("#"+obt+id).get(0),'Obtanied Marks')){
+	if(obtMarks>totMarks){
+		$("#"+obt+id).focus();
+		 showerr($("#"+obt+id)[0], "Obtanied marks shouldn't be more than total marks!","block");
+		 $("#"+obt+id).val('');
+		 return false;
+		 
+	}else{
+     var percentage=(obtMarks*100)/totMarks;
+	     $("#"+per+id).val(percentage.toFixed(2));
+	}
+	}
+	}else{
+		$("#"+per+id).val('');
+	}
+    
+}
+
+
+function calculatePercentage1(id)
+{
+	if($("#quliTotal"+id).val()!='' && $("#quliObt"+id).val()!=''){
+	var totMarks=parseInt($("#quliTotal"+id).val());
+	var obtMarks=parseInt($("#quliObt"+id).val());
+	if(IsInteger($("#quliTotal"+id).get(0),'Total Marks') && IsInteger($("#quliObt"+id).get(0),'Obtanied Marks')){
+	if(obtMarks>totMarks){
+		 $("#quliObt"+id).focus();
+		 showerr($("#quliObt"+id)[0], "Obtanied marks shouldn't be more than total marks!","block");
+		 $("#quliObt"+id).val('');
+		 return false;
+		 
+	}else{
+     var percentage=(obtMarks*100)/totMarks;
+	     $("#quliPer"+id).val(percentage.toFixed(2));
+	}
+	}
+	}else{
+		 $("#quliPer"+id).val('');
+	}
+    
+}
+
+var isJpg = function (name) {
+    return name.match(/jpg$/i);
+};
+var isJpeg = function (name) {
+    return name.match(/jpeg$/i);
+};
+var isPng = function (name) {
+    return name.match(/png$/i);
+};
+
+
+
+function saveOtp(otp,mobileNo){ 			 /* This function is used save student personal detail */     
+	
+	try{      
+		     
+		      var jsonObject={"mobile":mobileNo,"otp":otp};
+		      $.ajax({
+		          type: "POST",
+				  url: "userRegistration/saveAndSendOtpOnMobile.html",
+				  contentType: 'application/json',
+				  data:JSON.stringify(jsonObject),
+				  dataType: 'json',
+		          success: function (data) {
+		        	  setTimeout(function () {		
+							displaySuccessMessages("errMsg", data.status,""); // function to display success message and it's appearance time 
+						}, 1000);
+		        	  clearSuccessMessageAfterTenSecond("errMsg");
+		             },
+		          error: function (data) {
+		              alert("Error");
+		          }
+		      });
+		
+	  }catch(err){
+		alert(err);
+	}
+}
+
+function uploadImage(photo,signature,aadhaar,marksheet){
+
+	  if(photo!= '')
+      {
+            var img2 =  'data:image/jpeg;base64,'+photo;
+            $('#ph').attr('src',img2);
+       }
+	 if(signature!= '')
+     {
+          var img2 =  'data:image/jpeg;base64,'+signature;
+          $('#sign').attr('src',img2);
+     }
+	if(aadhaar!= '')
+    {
+          var img2 =  'data:image/jpeg;base64,'+aadhaar;
+          $('#aadhar').attr('src',img2);
+     }
+	if(marksheet!= '')
+    {
+          var img2 =  'data:image/jpeg;base64,'+marksheet;
+          $('#marks').attr('src',img2);
+     }
+	
+}
+
+
+/*code for next and previous button*/
+function nextTab(elem) {
+    $(elem).next().find('a[data-toggle="tab"]').click();
+}
+function prevTab(elem) {
+    $(elem).prev().find('a[data-toggle="tab"]').click();
+} 
+/*end here*/
+
+
+ function getCollege(object,id) { 
+	 var index=id.substring(3, id.length);
+	 $("#pgm"+index).val('');
+	 $("#clg"+index).val('');
+	// $("#course_type"+index).val('');
+	 var university=object.value;
+	 var courseId=$("#courseId").val();
+     getCollegeByUniversity(university,id,'',courseId);
+}
+ 
+ function changeValues(index)
+ {
+	 $("#pgm"+index).val('');
+	 //$("#course_type"+index).val(''); use when show course type on choice tabs
+ }
+ 
+ 
+
+ function deleteRow(index1)
+ {
+	 var status= confirm("Are you sure you want to delete row?");
+		if(status)
+		{
+			  var rowCount = table.rows.length;
+			  if(rowCount>2){
+		//var deleteInd= parseInt(deleteIndex.length);
+	//	alert(deleteInd);
+	    //var newindex1=(parseInt($('#index').val())+1);
+	    var index=parseInt($('#index').val());
+	    var webUrl='../common/';
+	    var clgId="clg"+index;
+	    var pgmId="pgm"+index;
+	    var programmeType="";
+	    var programmeType1="";
+	    var programme="";
+	    var uniDrop1="";
+	    var programmeData="";
+	    var	uniDrop="";
+	    var courseId=$("#courseId").val();
+		 $.ajax({ 
+				type: "POST",
+				url:webUrl+'getUniversity.html',
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {         
+						programme=response.data;
+						   uniDrop1 += "<option value=''>Select University</option>"; 
+			            	$.each(programme, function (key, val) {
+			                    var widgetKey = val.id;
+			                    var widgetValue = val.value;
+			                    uniDrop1 += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+			                 });
+		               
+		             }else{
+		            	 uniDrop1 += "<option value=''>Select University</option>";
+		             }
+	            }
+		 });
+		 
+		 /*$.ajax({ 
+				type: "POST",
+				url:webUrl+'getCourseType.html?pgmType='+$("#pgmType").val(),
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {       
+						 programmeData=response.data;
+						 programmeType1 += "<option value=''>Select Course type </option>"; 
+		             	 $.each(response.data, function (key, val) {
+		                     var widgetKey = val.id;
+		                     var widgetValue = val.value;
+		                     programmeType1 += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+		                  });
+		                 
+		             }else{
+		            	 programmeType1 += "<option value=''>Select Course type</option>";
+		             }
+	            }
+		 });*/
+	  
+	       for(var i=index1; i<=index-1; i++)
+	       {
+	    	   var newIndex=parseInt(i)+1;
+	    	   var clg="clg"+i;
+	    	   var pgm="pgm"+i;
+	    	   var course="course_type"+i;
+	    	   var university="uni"+i;
+	    	/*   $("#txt_"+clg).html("");
+	    	   $("#txt_"+pgm).html("");
+	    	   $("#txt_"+course).html("");
+	    	   $("#txt_"+university).html("");*/
+	    	    uniDrop += "<option value=''>Select University</option>"; 
+            	$.each(programme, function (key, val) {
+                    var widgetKey = val.id;
+                    var widgetValue = val.value;
+                    if($("#uni"+newIndex).val()==widgetKey)
+                    uniDrop += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                    else
+                    uniDrop += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+                 });
+            	
+            	 var uniDrop='<select class="form-control" '
+     				+' id="uni'+i+'" name="uni'+i+'" onchange=getCollege(this,"'+clg+'");>' +uniDrop+'</select>';
+            
+            	 var courseType=$("#course_type").val();
+            	 
+            	/* programmeType += "<option value=''>Select Course type </option>"; 
+             	 $.each(programmeData, function (key, val) {
+                     var widgetKey = val.id;
+                     var widgetValue = val.value;
+                     if($("#course_type"+newIndex).val()==widgetKey)
+                     programmeType += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                     else
+                     programmeType += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                  });*/
+               
+	    	   $("#uni"+i).html(uniDrop);
+	    	   $("#clg"+i).html(getCollegeByUniversity($("#uni"+newIndex).val(),clg,$("#clg"+newIndex).val(),courseId));
+	    	   //$("#course_type"+i).html(programmeType);
+	    	   $("#pgm"+i).html(getDegreeByCollegeAndType(webUrl,courseType,pgm,newIndex,$("#pgm"+newIndex).val()));
+	    	   uniDrop="";
+	    	  // programmeType="";
+	       }
+	       $('#table tr:last').remove();
+	       $("#index").val(index-1);
+		}
+		else{
+			 
+			  document.getElementById("errMsg6").innerHTML="<center><strong>At least 1 rows should be present in the table!</strong></center>";
+	    	  clearSuccessMessageAfterTenSecond("errMsg6");
+			  return false;
+		}
+	}
+ }
+ 
+/* function addValues()
+ {
+	 var status= confirm("Are you sure you want to add row?");
+		if(status)
+		{
+		
+	    var index1=parseInt($('#choiceForAdd').val());
+	    var index=(parseInt($('#index').val())+1);
+	    if(!(index1>index || index1<0)){
+	    var webUrl='../common/';
+	    var clgId="clg"+index;
+	    var pgmId="pgm"+index;
+	    var programmeType="";
+	    var programmeType1="";
+	    var programme="";
+	    var uniDrop1="";
+	    var programmeData="";
+	    var	uniDrop="";
+	    var courseId=$("#courseId").val();
+		 $.ajax({ 
+				type: "POST",
+				url:webUrl+'getUniversity.html',
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {         
+						programme=response.data;
+						   uniDrop1 += "<option value=''>Select University</option>"; 
+			            	$.each(programme, function (key, val) {
+			                    var widgetKey = val.id;
+			                    var widgetValue = val.value;
+			                    uniDrop1 += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+			                 });
+		               
+		             }else{
+		            	 uniDrop1 += "<option value=''>Select University</option>";
+		             }
+	            }
+		 });
+		 
+		 $.ajax({ 
+				type: "POST",
+				url:webUrl+'getCourseType.html?pgmType='+$("#pgmType").val(),
+				dataType: 'json',
+				contentType: "application/json",
+				async: false,
+				success: function (response)  // when data returns through controller
+				{
+					 if (typeof response.data != 'undefined' && response.data.length > 0)
+		             {       
+						 programmeData=response.data;
+						 programmeType1 += "<option value=''>Select Course type </option>"; 
+		             	 $.each(response.data, function (key, val) {
+		                     var widgetKey = val.id;
+		                     var widgetValue = val.value;
+		                     programmeType1 += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+		                  });
+		                 
+		             }else{
+		            	 programmeType1 += "<option value=''>Select Course type</option>";
+		             }
+	            }
+		 });
+	  
+		 var uniDrop='<select class="form-control" '
+				+' id="uni'+index+'" name="uni'+index+'" onchange=getCollege(this,"'+clgId+'");>' +uniDrop+'</select>';
+	  
+		 var courseType=$("#course_type").val();
+		 
+		  $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+			        +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange="changeValues('+index+');">'
+					   +'<option value="">Select College</option></select></td><td class="text-center"><select class="form-control" id="course_type'+index+'" name="course_type'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'",this.value,"'+pgmId+'","'+index+'","");>'
+					   +programmeType1+'</select></td>'
+			        +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+					   +'<option value="">Select Programme</option></select></td>'
+					   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+					   +'<td class="text-center" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+					   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');
+		 $('#table tr').last().after('<tr ><td class="text-center" id="'+index+'">'+index+'</td><td class="text-center">'+uniDrop+' </td>'
+			        +'<td class="text-center"><select class="form-control" id="clg'+index+'" name="clg'+index+'" onchange=getDegreeByCollegeAndType("'+webUrl+'","'+courseType+'","'+pgmId+'","'+index+'","");>'
+					   +'<option value="">Select College</option></select></td>'
+			        +'<td class="text-center"><select class="form-control" id="pgm'+index+'" name="pgm'+index+'">'
+					   +'<option value="">Select Programme</option></select></td>'
+					   +'<td class="text-center"><input type="text" class="form-control" id="pre'+index+'" value="'+index+'" readonly="readonly"> </td>'
+					   +'<td class="text-center" onclick="deleteRow('+index+')" style="cursor:pointer"><i class="fa fa-trash crimson-size"></i><a href="#" '
+					   +'class="clr-subheadnew chnageonhover" id="DELETE_RECORD" >Delete</a></td></tr>');
+		 
+	       $("#index").val(index);
+	       for(var i=index; i>index1; i--)
+	       {
+	    	   var newIndex=i-1;
+	    	   var clg="clg"+i;
+	    	   var pgm="pgm"+i;
+	    	    uniDrop += "<option value=''>Select University</option>"; 
+            	$.each(programme, function (key, val) {
+                    var widgetKey = val.id;
+                    var widgetValue = val.value;
+                    if($("#uni"+newIndex).val()==widgetKey)
+                    uniDrop += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                    else
+                    uniDrop += "<option value='" + widgetKey + "'>" + widgetValue + "</option>";
+                 });
+            	
+            	 var uniDrop='<select class="form-control" '
+     				+' id="uni'+i+'" name="uni'+i+'" onchange=getCollege(this,"'+clg+'");>' +uniDrop+'</select>';
+            	
+            	 programmeType += "<option value=''>Select Course type </option>"; 
+             	 $.each(programmeData, function (key, val) {
+                     var widgetKey = val.id;
+                     var widgetValue = val.value;
+                     if($("#course_type"+newIndex).val()==widgetKey)
+                     programmeType += "<option value='" + widgetKey + "' selected>" + widgetValue + "</option>";
+                     else
+                     programmeType += "<option value='" + widgetKey + "' >" + widgetValue + "</option>";	 
+                  });
+               
+	    	   $("#uni"+i).html(uniDrop);
+	    	   $("#clg"+i).html(getCollegeByUniversity($("#uni"+newIndex).val(),clg,$("#clg"+newIndex).val(),courseId));
+	    	  // $("#course_type"+i).html(programmeType);
+	    	   //$("#pgm"+i).html(getDegreeByCollegeAndType(webUrl,$("#course_type"+newIndex).val(),pgm,newIndex,$("#pgm"+newIndex).val()));
+	    	   $("#pgm"+i).html(getDegreeByCollegeAndType(webUrl,courseType,pgm,newIndex,$("#pgm"+newIndex).val()));
+	    	   uniDrop="";
+	    	   //programmeType="";
+	       }
+
+	       var uniDrop1='<select class="form-control" '
+				+' id="uni'+index1+'" name="uni'+index1+'" onchange=getCollege(this,"'+clgId+'");>' +uniDrop1+'</select>';
+	       $("#uni"+index1).html(uniDrop1);
+    	   $("#clg"+index1).html('<option value="">select College </option>');
+    	   //$("#course_type"+index1).html(programmeType1);
+    	   $("#pgm"+index1).html('<option value="">select Programme</option>');
+	    }
+	    else{
+	    	  document.getElementById("errMsg6").innerHTML="<center><strong>Please enter valid row!</strong></center>";
+	    	  clearSuccessMessageAfterTenSecond("errMsg6");
+			  return false;
+	    }
+    	   
+    	   
+		}
+ }
+ */
+ function readURL(input,id,imageId) {
+		
+		$("#"+id).val(id);
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				$('#'+imageId).attr('src', e.target.result);
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+ /*function removePassingYear(value,id,idname) {
+		if(id==1)
+	  {
+			var newIndex=parseInt(id)+1
+			var newValue=$("#"+idname+newIndex).val();
+			if(parseInt(newValue)>parseInt(value)){
+				$("#txt_"+idname+newIndex).html("");
+			}
+	  }
+		else if(id==2)
+		  {
+			    alert();
+			    if($("#flag").val()=='LE-UG' || $("#flag").val()=='LE-PG')
+		        {
+				   var newValue=parseInt($("#sem_passing_year").val());
+				   if(newValue>parseInt(value))
+					$("#txt_").html("");
+				}
+		  }
+		
+	}
+ */
+ function hideAndShow(eligibity)
+ {
+	 if(eligibity=='10+')
+	    {
+	      $(".dpm").show();
+	      $(".dpm1").show();
+	      $(".2").hide();
+	      $(".22").hide();
+	      $(".23").hide();
+	      $(".6th").show();
+	    }
+else if(eligibity=='12+')
+ {
+   $(".dpm").show();
+   $(".dpm1").show();
+   $(".6th").hide();
+   $(".2").show();
+   $(".22").show();
+   $(".23").show();
+ }
+else if(eligibity=='Under')
+ {
+   $(".ug").show();
+   $(".ug1").show();
+ }
+	 
+ }
+
+ 
+ function sendMail(){
+	 $.ajax({
+          type: "POST",
+		  url: "userRegistration/sendMail.html",
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  async: false,
+          success: function (data) {
+        	  
+          }
+      });
+	 
+ }
+ 
+ function sendSms(){
+	 $.ajax({
+          type: "POST",
+		  url: "userRegistration/sendSms.html",
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  async: false,
+          success: function (data) {
+        	  
+          }
+      });
+	 
+ }
